@@ -37,7 +37,6 @@ angular.module('jenkins', []).
     factory('proxyFrom', [
         '$http', 'stringified', 'STAPLER_CONTENT_TYPE', 'CSRF_CRUMB_FIELD_NAME',
         function($http, stringified, STAPLER_CONTENT_TYPE, CSRF_CRUMB_FIELD_NAME) {
-
         return function(binding) {
             var url = binding.url + '/',
                 proxy = {};
@@ -59,6 +58,8 @@ angular.module('jenkins', []).
                         method:  'POST',
                         data:    stringified(parameters),
                         headers: headers
+
+
                     });
                 }
             });

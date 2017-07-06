@@ -6,6 +6,7 @@ module('build-monitor.expansions.build-number', []).
 
 // todo fixme: lastBuildUrl: "job/demo%20app//20/", double slash?
 directive('buildNumber', [function () {
+
     return {
         restrict: 'E',
         replace:  true,

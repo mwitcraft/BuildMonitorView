@@ -17,6 +17,7 @@ angular.
                 fetchJobViews = proxy.buildMonitor.fetchJobViews;
 
             $scope.jobs         = [];
+            $scope.jobsPassing  = 0;
             $scope.fontSize     = fontSizeFor($scope.jobs, $rootScope.settings.numberOfColumns);
 
             every(5000, function () {
@@ -31,6 +32,16 @@ angular.
 
                 }, tryToRecover());
             });
+
+            //Steps through and finds the number of jobs passing everytime it refreshes.
+            every(5000, function(){
+                $scope.jobsPassing  = 0;
+                for(var i=0; i<$scope.jobs.length; i++){
+                    if($scope.jobs[i].status === "successful"){
+                        $scope.jobsPassing++;
+                    }
+                }
+            })
 
             // todo: extract the below as a configuration service, don't rely on $rootScope.settings and make the dependency explicit
             $rootScope.$watch('settings.numberOfColumns', function(newColumnCount) {
@@ -178,7 +189,8 @@ angular.
                 });
             },
             replace: true,
-            template: ['<div class="notifier"',
+            template: [
+                '<div class="notifier"',
                 'ng-show="message"',
                 'ng-animate="\'fade\'">',
                     '{{ message }}',

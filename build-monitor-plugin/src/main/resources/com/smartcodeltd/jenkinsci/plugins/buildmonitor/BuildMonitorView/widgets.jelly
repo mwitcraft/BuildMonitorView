@@ -1,7 +1,8 @@
 <ul id="widgets"
     data-viewport-units=""
     data-ng-style="{ 'font-size': (fontSize * settings.fontSize) + vmax}"
-    class="columns-{{ settings.numberOfColumns }}">
+    class="columns-{{ settings.numberOfColumns }}"
+>
 
     <li ng-repeat="project in jobs track by project.hashCode"
         class="{{ project.status }} basic project widget"
@@ -14,6 +15,10 @@
              data-ng-style="{ 'width': project.progress + '%' }"
         >
             <span class="value">{{project.progress}}%</span>
+        </div>
+
+        <div>
+            <h1>{{jobsPassing}}</h1>
         </div>
 
         <header>
