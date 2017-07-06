@@ -16,9 +16,11 @@ angular.
             var tryToRecover  = connectivityStrategist.decideOnStrategy,
                 fetchJobViews = proxy.buildMonitor.fetchJobViews;
 
-            $scope.jobs         = [];
-            $scope.jobsPassing  = 0;
-            $scope.fontSize     = fontSizeFor($scope.jobs, $rootScope.settings.numberOfColumns);
+            $scope.jobs             = [];
+            $scope.successfulJobs   = [];
+            $scope.failingJobs      = [];
+            $scope.jobsPassing      = 0;
+            $scope.fontSize         = fontSizeFor($scope.jobs, $rootScope.settings.numberOfColumns);
 
             every(5000, function () {
 
@@ -34,14 +36,28 @@ angular.
             });
 
             //Steps through and finds the number of jobs passing everytime it refreshes.
+//            every(5000, function(){
+//                $scope.jobsPassing  = 0;
+//                for(var i=0; i<$scope.jobs.length; i++){
+//                    if($scope.jobs[i].status === "successful"){
+//                        $scope.jobsPassing++;
+//                    }
+//                }
+//            })
+
             every(5000, function(){
-                $scope.jobsPassing  = 0;
+                $scope.successfulJobs = [];
+                $scope.failingJobs = [];
                 for(var i=0; i<$scope.jobs.length; i++){
                     if($scope.jobs[i].status === "successful"){
-                        $scope.jobsPassing++;
+                        $scope.successfulJobs.push($scope.jobs[i]);
+                    }
+                    else if($scope.jobs[i].status === "failing"){
+                        $scope.failingJobs.push($scope.jobs[i]);
                     }
                 }
             })
+
 
             // todo: extract the below as a configuration service, don't rely on $rootScope.settings and make the dependency explicit
             $rootScope.$watch('settings.numberOfColumns', function(newColumnCount) {

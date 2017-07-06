@@ -18,7 +18,8 @@
         </div>
 
         <div>
-            <h1>{{jobsPassing}}</h1>
+            <h1>Success: {{successfulJobs.length}} - {{successfulJobs[0].name}} - {{successfulJobs[1].name}}</h1>
+            <h1>Failing: {{failingJobs.length}} - {{failingJobs[0].name}}</h1>
         </div>
 
         <header>
