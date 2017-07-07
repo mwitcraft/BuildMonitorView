@@ -3,7 +3,6 @@
 
 .build-monitor {
   .widget.basic.project {
-
     // ------------------------------------------------------------------------
     // Base: Typography
 
@@ -87,12 +86,17 @@
             border-radius: 3px;
             margin: 0 2px;
           }
+          
         }
 
         .build-failure-analyzer-plugin ul.identified-failures { list-style-type: none; display: inline-block; margin: 0; padding: 0; }
         .build-failure-analyzer-plugin ul.identified-failures li { display: inline-block; margin-right:0.5em; }
         .build-failure-analyzer-plugin ul.identified-failures li:after { content: ","; }
         .build-failure-analyzer-plugin ul.identified-failures li:last-child:after { content: ""; }
+      }
+
+      myspacing {
+        padding: 4px 8px 4px 8px;
       }
 
       .slots {

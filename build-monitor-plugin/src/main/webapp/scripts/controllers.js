@@ -58,7 +58,6 @@ angular.
                 }
             })
 
-
             // todo: extract the below as a configuration service, don't rely on $rootScope.settings and make the dependency explicit
             $rootScope.$watch('settings.numberOfColumns', function(newColumnCount) {
                 $scope.fontSize = fontSizeFor($scope.jobs, newColumnCount);
