@@ -2,22 +2,31 @@
 <!-- ng-style allows for all widgets to be resized based on user action-->
 <div ng-style="{ 'font-size': (fontSize * settings.fontSize) + vmax}">
 
-    <!--Creates the widget that tells the user how many jobs are successful out of all the jobs-->
-    <!-- Class=columns-1 so the widget stays one bar across the whole top-->
-    <div
-            class="columns-1"
-    >
-        <li>
-            <div class="successful basic project widget">
+    <!-- Style removes bullet points from side of badges-->
+    <li style="list-style-type: none">
+        <div class="successful basic project widget">
+            <!-- If not all jobs are successful-->
+            <span ng-if="!(jobs.length === successfulJobs.length)">
                 <header>
                     <h2>
-                        <!-- TODO: add link to href-->
-                        <a title="Success Badge" href="">{{successfulJobs.length}}/{{jobs.length}} JOBS PASSED</a>
+                        <a title="Success Badge" href="">{{successfulJobs.length}}/{{jobs.length}} job(s) passing </a>
                     </h2>
                 </header>
-            </div>
-        </li>
-    </div>
+            </span>
+            <!-- If all jobs are successful -->
+            <span ng-if="jobs.length === successfulJobs.length">
+                <!-- Sets margins and font size so badge will take up full screen -->
+                <div style="margin:35vmin 0 35vmin 0; font-size:3vmin">
+                    <header>
+                        <h2>
+                            <a title="Success Badge" href="">{{successfulJobs.length}}/{{jobs.length}} job(s) passing</a>
+                        </h2>
+                    </header>
+                    <p align="center">all builds passed</p>
+                </div>
+            </span>
+        </div>
+    </li>
 
     <!--Creates the widgets for all jobs that are not successful-->
     <ul id="widgets"
@@ -75,7 +84,7 @@
                             </li>
                         </ul>
                     </header>
-                    
+
                     <div class="slots">
                         <slot name="1" expansion="build-number" project="project" />
                         <slot name="2" expansion="build-time"   project="project" />
