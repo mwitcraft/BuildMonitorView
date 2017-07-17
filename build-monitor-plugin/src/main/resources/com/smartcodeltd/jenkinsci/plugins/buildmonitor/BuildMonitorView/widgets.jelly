@@ -4,7 +4,7 @@
 
     <!-- Style removes bullet points from side of badges-->
     <li style="list-style-type: none">
-        <div class="successful basic project widget">
+        <div style=" position: fixed; bottom: 25px; left:10px; right:10px;" class="successful basic project widget">
             <!-- If not all jobs are successful-->
             <span ng-if="!(jobs.length === successfulJobs.length)">
                 <header>
@@ -13,7 +13,9 @@
                     </h2>
                 </header>
             </span>
+        </div>
             <!-- If all jobs are successful -->
+        <div class="successful basic project widget">
             <span ng-if="jobs.length === successfulJobs.length">
                 <!-- Sets margins and font size so badge will take up full screen -->
                 <div style="margin:35vmin 0 35vmin 0; font-size:3vmin">
