@@ -30,6 +30,9 @@
           <br/>
         </span>
       </j:forEach>
+
+      <p>${it.nickname}</p>
+
     </div>
   </f:entry>
 
@@ -55,6 +58,10 @@
   <f:entry title="${%Title}">
     <f:textbox name="title" value="${it.title}"/>
   </f:entry>
+
+    <f:entry title="${%nickname}">
+      <f:textbox name="nickname" value="${it.nickname}"/>
+    </f:entry>
 
   <f:entry title="${%Ordered by}">
     <select name="order" class="setting-input">

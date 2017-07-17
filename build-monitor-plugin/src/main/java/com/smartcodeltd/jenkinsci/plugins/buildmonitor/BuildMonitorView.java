@@ -54,6 +54,7 @@ public class BuildMonitorView extends ListView {
     public static final BuildMonitorDescriptor descriptor = new BuildMonitorDescriptor();
 
     private String title;
+    private String nickname;
 
     /**
      * @param name  Name of the view to be displayed on the Views tab
@@ -69,6 +70,11 @@ public class BuildMonitorView extends ListView {
     @SuppressWarnings("unused") // used in .jelly
     public String getTitle() {
         return isGiven(title) ? title : getDisplayName();
+    }
+
+    @SuppressWarnings("unused")
+    public String getNickname(){
+        return isGiven(nickname) ? nickname : "Empty";
     }
 
     @SuppressWarnings("unused") // used in .jelly
@@ -113,6 +119,7 @@ public class BuildMonitorView extends ListView {
 
             String requestedOrdering = req.getParameter("order");
             title                    = req.getParameter("title");
+            nickname                 = req.getParameter("nickname");
 
             currentConfig().setDisplayCommitters(json.optBoolean("displayCommitters", true));
 
