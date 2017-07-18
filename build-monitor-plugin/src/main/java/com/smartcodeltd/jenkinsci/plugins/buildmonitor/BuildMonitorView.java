@@ -32,6 +32,7 @@ import hudson.Extension;
 import hudson.model.Descriptor.FormException;
 import hudson.model.Job;
 import hudson.model.ListView;
+import jdk.nashorn.internal.scripts.JO;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
@@ -39,10 +40,8 @@ import org.kohsuke.stapler.bind.JavaScriptMethod;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.lang.reflect.Array;
+import java.util.*;
 
 import static hudson.Util.filter;
 
@@ -55,6 +54,9 @@ public class BuildMonitorView extends ListView {
 
     private String title;
     private String nickname;
+    private ArrayList<String> nicknameList;
+    private String[] nicknameArray;
+    private HashMap<String, Job> jobMap;
 
     /**
      * @param name  Name of the view to be displayed on the Views tab
@@ -65,6 +67,17 @@ public class BuildMonitorView extends ListView {
         super(name);
 
         this.title = title;
+
+        jobMap = new HashMap<String, Job>();
+    }
+
+    @SuppressWarnings("unused")
+    public void populateJobList(Job job){
+        jobMap.put(job.getName(), job);
+        for(int i = 0; i < jobMap.size(); ++i){
+            System.out.println("*****" + jobMap.keySet().toArray()[i]  + "///" + jobMap.values().toArray()[i] + "*****");
+        }
+        System.out.println("_______________________");
     }
 
     @SuppressWarnings("unused") // used in .jelly
@@ -76,6 +89,25 @@ public class BuildMonitorView extends ListView {
     public String getNickname(){
         return isGiven(nickname) ? nickname : "Empty";
     }
+
+    @SuppressWarnings("unused")
+    public void updateNicknameList(){
+        System.out.println("Updated");
+        nicknameList = new ArrayList<String>();
+        for(JobView v : jobViews()){
+            nicknameList.add(v.name());
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public String[] getListAsArray(){
+        String[] nicknameArray = new String[this.nicknameList.size()];
+        for(int i = 0; i < this.nicknameList.size(); ++i){
+            nicknameArray[i] = nicknameList.get(i);
+        }
+        return nicknameArray;
+    }
+
 
     @SuppressWarnings("unused") // used in .jelly
     public boolean isEmpty() {
@@ -215,4 +247,29 @@ public class BuildMonitorView extends ListView {
 
     @Deprecated // use Config instead
     private Comparator<Job<?, ?>> order;      // note: this field can be removed when people stop using versions prior to 1.6+build.150
+
+
+    public void addNickname(){
+        System.out.println("*********************NICKNAME ADDED*******************************");
+    }
+
+    public void printArray(){
+        for(int i = 0; i < nicknameArray.length; ++i ){
+            System.out.println("************" + nicknameArray[i] + "************");
+        }
+        System.out.println("__________________________________");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

@@ -17,8 +17,12 @@
   </f:entry>
 
   <f:entry title="${%Jobs}">
+    <p>${h.getAllTopLevelItems(it.ownerItemGroup).class}</p>
     <div class="listview-jobs">
       <j:forEach var="job" items="${h.getAllTopLevelItems(it.ownerItemGroup)}">
+        <j:invoke method="populateJobList" on="${it}">
+          <j:arg type="hudson.model.Job" value="${job}"/>
+        </j:invoke>
         <j:set var="spanClass" value=""/>
         <j:set var="spanStyle" value=""/>
         <j:if test="${job.parent!=it.ownerItemGroup}">
@@ -30,11 +34,40 @@
           <br/>
         </span>
       </j:forEach>
-
-      <p>${it.nickname}</p>
-
     </div>
   </f:entry>
+
+
+
+
+
+
+
+
+  <f:optionalBlock name="userenametbox" title="${%Rename jobs for the view}" checked="${it.renametbox != null}">
+    <f:entry>
+      <f:textbox name="nickname" value="${it.nickname}" />
+    </f:entry>
+  </f:optionalBlock>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <f:optionalBlock name="useincluderegex" title="${%Use a regular expression to include jobs into the view}"
                    checked="${it.includeRegex != null}" help="/help/view-config/includeregex.html">
@@ -58,10 +91,6 @@
   <f:entry title="${%Title}">
     <f:textbox name="title" value="${it.title}"/>
   </f:entry>
-
-    <f:entry title="${%nickname}">
-      <f:textbox name="nickname" value="${it.nickname}"/>
-    </f:entry>
 
   <f:entry title="${%Ordered by}">
     <select name="order" class="setting-input">

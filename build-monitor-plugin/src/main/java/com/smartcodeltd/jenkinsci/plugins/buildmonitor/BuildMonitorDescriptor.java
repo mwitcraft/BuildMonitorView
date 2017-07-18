@@ -53,4 +53,8 @@ public final class BuildMonitorDescriptor extends ViewDescriptor {
     public void setPermissionToCollectAnonymousUsageStatistics(boolean collect) {
         this.permissionToCollectAnonymousUsageStatistics = collect;
     }
+    public void doAddNickname(@QueryParameter("view") BuildMonitorView v, @QueryParameter("name") String name){
+        System.out.println("****************GOT HERE*************************");
+        v.addNickname();
+    }
 }
