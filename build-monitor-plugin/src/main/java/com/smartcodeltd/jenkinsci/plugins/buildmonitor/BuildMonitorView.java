@@ -23,6 +23,7 @@
  */
 package com.smartcodeltd.jenkinsci.plugins.buildmonitor;
 
+import com.mongodb.util.Hash;
 import com.smartcodeltd.jenkinsci.plugins.buildmonitor.api.Respond;
 import com.smartcodeltd.jenkinsci.plugins.buildmonitor.facade.StaticJenkinsAPIs;
 import com.smartcodeltd.jenkinsci.plugins.buildmonitor.installation.BuildMonitorInstallation;
@@ -37,6 +38,7 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.bind.JavaScriptMethod;
+import sun.reflect.generics.tree.Tree;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
@@ -56,7 +58,8 @@ public class BuildMonitorView extends ListView {
     private String nickname;
     private ArrayList<String> nicknameList;
     private String[] nicknameArray;
-    private HashMap<String, Job> jobMap;
+    private HashMap<String, String> jobMap;
+    private String findName = "Mason";
 
     /**
      * @param name  Name of the view to be displayed on the Views tab
@@ -68,16 +71,87 @@ public class BuildMonitorView extends ListView {
 
         this.title = title;
 
-        jobMap = new HashMap<String, Job>();
+        jobMap = new HashMap<String, String>();
     }
 
     @SuppressWarnings("unused")
-    public void populateJobList(Job job){
-        jobMap.put(job.getName(), job);
-        for(int i = 0; i < jobMap.size(); ++i){
-            System.out.println("*****" + jobMap.keySet().toArray()[i]  + "///" + jobMap.values().toArray()[i] + "*****");
+    public void populateJobList(String jobName){
+        if(jobMap.containsKey(jobName)){
+            System.out.println("_____________________________________________________________________Already Exists");
+            return;
         }
-        System.out.println("_______________________");
+        else if(jobName == null){
+            return;
+        }
+        else{
+            jobMap.put(jobName, jobName);
+        }
+    }
+
+    public String nowFindName(){
+        return "hello";
+    }
+
+    @SuppressWarnings("unused")
+    public void printJobMap(){
+        for(int i = 0; i < jobMap.size(); ++i){
+            System.out.println("Key: " +  jobMap.keySet().toArray()[i]);
+            System.out.println("Value: " + jobMap.values().toArray()[i]);
+        }
+    }
+
+    public Map<String, String> getJobMap(){
+        jobMap.remove("");
+        jobMap.remove(null);
+        printMap(this.jobMap);
+        Map<String,String> map = new TreeMap<String, String>(this.jobMap);
+        return map;
+    }
+
+    public HashMap<String, String> getJobMap2(){
+        jobMap.remove("");
+        jobMap.remove(null);
+        printMap(this.jobMap);
+        return this.jobMap;
+    }
+
+    public String findValue(Job job){
+        String val = this.jobMap.get(job.getName());
+        System.out.println(val);
+        return val;
+    }
+
+    public void printMap(HashMap<String, String> newMap){
+        for(int i = 0; i < newMap.size(); ++i){
+            System.out.println("Key: " +  newMap.keySet().toArray()[i]);
+            System.out.println("Value: " + newMap.values().toArray()[i]);
+        }
+    }
+
+    public void updateMap(){
+        ArrayList<String> nicknames = descriptor.getNicknames();
+        for(String name : nicknames){
+            System.out.println("*****" + name + "*****");
+        }
+    }
+
+    public void descNicknameMap(){
+        HashMap<String, String> newMap = descriptor.getNicknameMap();
+
+        System.out.println("NewMap keys: " + newMap.keySet().toString());
+        System.out.println("JobMap keys: " + this.jobMap.keySet().toString());
+
+        for(int i = 0; i < newMap.size(); ++i){
+            for(int j = 0; j < this.jobMap.size(); ++j){
+                if(newMap.keySet().toArray()[i].equals(this.jobMap.keySet().toArray()[j])){
+                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + newMap.keySet().toArray()[i] + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+
+                    System.out.println("\n\n\nKey: " + newMap.keySet().toArray()[i].toString() + "\nValue: " + newMap.get(newMap.keySet().toArray()[i].toString()));
+
+                    this.jobMap.put(newMap.keySet().toArray()[i].toString(), newMap.get(newMap.keySet().toArray()[i].toString()));
+                }
+            }
+        }
     }
 
     @SuppressWarnings("unused") // used in .jelly

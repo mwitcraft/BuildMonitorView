@@ -21,7 +21,7 @@
     <div class="listview-jobs">
       <j:forEach var="job" items="${h.getAllTopLevelItems(it.ownerItemGroup)}">
         <j:invoke method="populateJobList" on="${it}">
-          <j:arg type="hudson.model.Job" value="${job}"/>
+          <j:arg type="java.lang.String" value="${job.name}"/>
         </j:invoke>
         <j:set var="spanClass" value=""/>
         <j:set var="spanStyle" value=""/>
@@ -43,15 +43,45 @@
 
 
 
+<!--<f:optionalBlock name="usenickname" title="${%Rename jobs for the view}">-->
+    <!--<j:invoke method="getJobMap" on="${it}" var="jobMap"/>-->
+    <!--<j:forEach items="${jobMap}" var="job" indexVar="i">-->
+      <!--<f:entry title="${job.key.name}">-->
+        <!--<f:textbox field="${job.key.name}" value="${job.value}"/>-->
+      <!--</f:entry>-->
+    <!--</j:forEach>-->
+<!--</f:optionalBlock>-->
 
-  <f:optionalBlock name="userenametbox" title="${%Rename jobs for the view}" checked="${it.renametbox != null}">
-    <f:entry>
-      <f:textbox name="nickname" value="${it.nickname}" />
-    </f:entry>
-  </f:optionalBlock>
 
+    <f:optionalBlock name="usenewnickname" title="${%Rename jobs for the view2}">
+      <j:invoke method="getJobMap2" on="${it}" var="jobMap"/>
+      <j:invoke method="descNicknameMap" on="${it}"/>
+      <j:forEach items="${h.getAllTopLevelItems(it.ownerItemGroup)}" var="job" indexVar="i">
+        <f:entry title="${job.name}">
+          <j:invoke method="findValue" on="${it}" var="val">
+            <j:arg type="hudson.model.Job" value="${job}"/>
+          </j:invoke>
+          <f:textbox field="nickname" value="${val}"/>
+          <input type="hidden" name="jobName" value="${job.name}"/>
+          <f:validateButton method="addNickname" title="Rename" with="nickname,jobName"/>
+        </f:entry>
+      </j:forEach>
+    </f:optionalBlock>
 
-
+    <!--<f:optionalBlock name="usenewnickname" title="${%Rename jobs for the view2}">-->
+      <!--<j:invoke method="getJobMap2" on="${it}" var="jobMap"/>-->
+      <!--<j:forEach items="${h.getAllTopLevelItems(it.ownerItemGroup)}" var="job" indexVar="i">-->
+        <!--<f:entry title="${job.name}">-->
+          <!--<j:invoke method="findValue" on="${it}" var="val">-->
+            <!--<j:arg type="hudson.model.Job" value="${job}"/>-->
+          <!--</j:invoke>-->
+          <!--<f:textbox field="nickname" value="${val}"/>-->
+          <!--<input type="hidden" name="jobName" value="${job.name}"/>-->
+          <!--<f:validateButton method="addNickname" title="Rename" with="nickname,jobName"/>-->
+        <!--</f:entry>-->
+      <!--</j:forEach>-->
+      <!--<j:invoke method="descNicknameMap" on="${it}"/>-->
+    <!--</f:optionalBlock>-->
 
 
 
