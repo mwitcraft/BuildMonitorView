@@ -59,7 +59,7 @@ public class BuildMonitorView extends ListView {
     private ArrayList<String> nicknameList;
     private String[] nicknameArray;
     private HashMap<String, String> jobMap;
-    private String findName = "Mason";
+    private String[] trialArray;
 
     /**
      * @param name  Name of the view to be displayed on the Views tab
@@ -72,12 +72,27 @@ public class BuildMonitorView extends ListView {
         this.title = title;
 
         jobMap = new HashMap<String, String>();
+
+        trialArray = new String[3];
+        trialArray[0] = "Mason";
+        trialArray[1] = "Reece";
+        trialArray[2] = "Parker";
+    }
+
+    public String[] getTrialArray(){
+        return this.trialArray;
+    }
+
+    public String findName(String jobName){
+        System.out.println("-----------------------" + jobName);
+        System.out.println("***********************" + this.jobMap.get(jobName));
+        return this.jobMap.get(jobName);
     }
 
     @SuppressWarnings("unused")
     public void populateJobList(String jobName){
         if(jobMap.containsKey(jobName)){
-            System.out.println("_____________________________________________________________________Already Exists");
+//            System.out.println("_____________________________________________________________________Already Exists");
             return;
         }
         else if(jobName == null){
@@ -88,17 +103,12 @@ public class BuildMonitorView extends ListView {
         }
     }
 
-    public String nowFindName(){
-        return "hello";
-    }
-
     @SuppressWarnings("unused")
     public void printJobMap(){
-        for(int i = 0; i < jobMap.size(); ++i){
-            System.out.println("Key: " +  jobMap.keySet().toArray()[i]);
-            System.out.println("Value: " + jobMap.values().toArray()[i]);
-        }
+        System.out.println("Got Here");
     }
+
+
 
     public Map<String, String> getJobMap(){
         jobMap.remove("");
@@ -133,6 +143,7 @@ public class BuildMonitorView extends ListView {
         for(String name : nicknames){
             System.out.println("*****" + name + "*****");
         }
+
     }
 
     public void descNicknameMap(){
@@ -247,6 +258,11 @@ public class BuildMonitorView extends ListView {
     @JavaScriptMethod
     public JSONObject fetchJobViews() throws Exception {
         return Respond.withSuccess(jobViews());
+    }
+
+    @JavaScriptMethod
+    public JSONObject fetchJobMap() throws IOException{
+        return Respond.withSuccess(this.jobMap);
     }
 
     // --

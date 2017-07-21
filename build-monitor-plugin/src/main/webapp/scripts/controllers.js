@@ -14,13 +14,14 @@ angular.
     controller('JobViews', ['$scope', '$rootScope', '$window', 'connectivityStrategist', 'every', 'proxy',
         function ($scope, $rootScope, $window, connectivityStrategist, every, proxy) {
             var tryToRecover  = connectivityStrategist.decideOnStrategy,
+                fetchJobMap   = proxy.buildMonitor.fetchJobMap,
                 fetchJobViews = proxy.buildMonitor.fetchJobViews;
 
             $scope.jobs             = [];
             $scope.successfulJobs   = [];
             $scope.failingJobs      = [];
-            $scope.jobsPassing      = 0;
             $scope.fontSize         = fontSizeFor($scope.jobs, $rootScope.settings.numberOfColumns);
+            $scope.map              = [];
 
             every(5000, function () {
 
@@ -32,18 +33,16 @@ angular.
 
                     $scope.fontSize = fontSizeFor($scope.jobs, $rootScope.settings.numberOfColumns);
 
-                }, tryToRecover());
+                }, tryToRecover())
+
+                .then();
             });
 
-            //Steps through and finds the number of jobs passing everytime it refreshes.
-//            every(5000, function(){
-//                $scope.jobsPassing  = 0;
-//                for(var i=0; i<$scope.jobs.length; i++){
-//                    if($scope.jobs[i].status === "successful"){
-//                        $scope.jobsPassing++;
-//                    }
-//                }
-//            })
+            every(5000, function(){
+                return fetchJobMap().then(function(response){
+                    $scope.map = response.data.data;
+                })
+            })
 
             every(5000, function(){
                 $scope.successfulJobs = [];

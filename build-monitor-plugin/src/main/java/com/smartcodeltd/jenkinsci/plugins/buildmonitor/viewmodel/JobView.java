@@ -65,6 +65,10 @@ public class JobView {
         return relative.name();
     }
 
+    public String getNickname(){
+        return "Paco";
+    }
+
     public String url() {
         return relative.url();
     }
