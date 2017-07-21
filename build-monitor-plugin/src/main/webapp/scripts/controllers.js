@@ -38,6 +38,7 @@ angular.
                 .then();
             });
 
+//          Populates $scope.map using jobMap from BuildMonitorView
             every(5000, function(){
                 return fetchJobMap().then(function(response){
                     $scope.map = response.data.data;

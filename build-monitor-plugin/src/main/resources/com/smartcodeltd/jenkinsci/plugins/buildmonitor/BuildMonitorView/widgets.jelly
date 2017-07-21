@@ -1,4 +1,5 @@
-<j:jelly xmlns:j="jelly:core" xmlns:f="/lib/form">
+<!--Need the jelly here to call java method to update jobs map-->
+<j:jelly xmlns:j="jelly:core">
     <!--Have this div because there can only be one root tag-->
     <!-- ng-style allows for all widgets to be resized based on user action-->
     <div ng-style="{ 'font-size': (fontSize * settings.fontSize) + vmax}">
