@@ -1,26 +1,22 @@
 package com.smartcodeltd.jenkinsci.plugins.buildmonitor;
 
 import hudson.Util;
-import hudson.model.Job;
 import hudson.model.ViewDescriptor;
 import hudson.util.FormValidation;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
-
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 public final class BuildMonitorDescriptor extends ViewDescriptor {
 
-    private ArrayList<String> nicknames;
+//    Stores user provided nicknames
     private HashMap<String, String> nicknameMap;
 
     public BuildMonitorDescriptor() {
         super(BuildMonitorView.class);
-        nicknames = new ArrayList<String>();
         nicknameMap = new HashMap<String, String>();
         load();
     }
@@ -61,18 +57,13 @@ public final class BuildMonitorDescriptor extends ViewDescriptor {
     public void setPermissionToCollectAnonymousUsageStatistics(boolean collect) {
         this.permissionToCollectAnonymousUsageStatistics = collect;
     }
+    @SuppressWarnings("unused")
+//    Used in 'configure-entries.jelly' adds job name and nickname to map
     public void doAddNickname(@QueryParameter("nickname") String nickname, @QueryParameter("jobName") String jobName){
         this.nicknameMap.put(jobName, nickname);
-        for(int i = 0; i < nicknameMap.size(); ++i){
-            System.out.println("#####" + "Key: " + nicknameMap.keySet().toArray()[i] + "#####");
-            System.out.println("#####" + "Value: " + nicknameMap.values().toArray()[i] + "#####");
-        }
     }
 
-    public ArrayList<String> getNicknames(){
-        return this.nicknames;
-    }
-
+//    Retrieves this.nicknameMap 
     public HashMap<String, String> getNicknameMap(){
         return this.nicknameMap;
     }

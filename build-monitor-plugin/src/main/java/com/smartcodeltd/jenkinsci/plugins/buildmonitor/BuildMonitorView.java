@@ -23,7 +23,6 @@
  */
 package com.smartcodeltd.jenkinsci.plugins.buildmonitor;
 
-import com.mongodb.util.Hash;
 import com.smartcodeltd.jenkinsci.plugins.buildmonitor.api.Respond;
 import com.smartcodeltd.jenkinsci.plugins.buildmonitor.facade.StaticJenkinsAPIs;
 import com.smartcodeltd.jenkinsci.plugins.buildmonitor.installation.BuildMonitorInstallation;
@@ -33,16 +32,13 @@ import hudson.Extension;
 import hudson.model.Descriptor.FormException;
 import hudson.model.Job;
 import hudson.model.ListView;
-import jdk.nashorn.internal.scripts.JO;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.bind.JavaScriptMethod;
-import sun.reflect.generics.tree.Tree;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.lang.reflect.Array;
 import java.util.*;
 
 import static hudson.Util.filter;
@@ -55,11 +51,7 @@ public class BuildMonitorView extends ListView {
     public static final BuildMonitorDescriptor descriptor = new BuildMonitorDescriptor();
 
     private String title;
-    private String nickname;
-    private ArrayList<String> nicknameList;
-    private String[] nicknameArray;
     private HashMap<String, String> jobMap;
-    private String[] trialArray;
 
     /**
      * @param name  Name of the view to be displayed on the Views tab
@@ -72,27 +64,12 @@ public class BuildMonitorView extends ListView {
         this.title = title;
 
         jobMap = new HashMap<String, String>();
-
-        trialArray = new String[3];
-        trialArray[0] = "Mason";
-        trialArray[1] = "Reece";
-        trialArray[2] = "Parker";
-    }
-
-    public String[] getTrialArray(){
-        return this.trialArray;
-    }
-
-    public String findName(String jobName){
-        System.out.println("-----------------------" + jobName);
-        System.out.println("***********************" + this.jobMap.get(jobName));
-        return this.jobMap.get(jobName);
     }
 
     @SuppressWarnings("unused")
+//    Used in 'configure-entries.jelly' just adds name of job to a list, if job name already exists, skips it.
     public void populateJobList(String jobName){
         if(jobMap.containsKey(jobName)){
-//            System.out.println("_____________________________________________________________________Already Exists");
             return;
         }
         else if(jobName == null){
@@ -104,61 +81,28 @@ public class BuildMonitorView extends ListView {
     }
 
     @SuppressWarnings("unused")
-    public void printJobMap(){
-        System.out.println("Got Here");
-    }
-
-
-
-    public Map<String, String> getJobMap(){
+//    Used in 'configure-entries.jelly' returns the jobMap containing the job names and nicknames
+    public HashMap<String, String> getJobMap(){
         jobMap.remove("");
         jobMap.remove(null);
-        printMap(this.jobMap);
-        Map<String,String> map = new TreeMap<String, String>(this.jobMap);
-        return map;
-    }
-
-    public HashMap<String, String> getJobMap2(){
-        jobMap.remove("");
-        jobMap.remove(null);
-        printMap(this.jobMap);
         return this.jobMap;
     }
 
+    @SuppressWarnings("unused")
+//    Used in 'configure-entries.jelly' returns the nickname for a given job
     public String findValue(Job job){
         String val = this.jobMap.get(job.getName());
-        System.out.println(val);
         return val;
     }
 
-    public void printMap(HashMap<String, String> newMap){
-        for(int i = 0; i < newMap.size(); ++i){
-            System.out.println("Key: " +  newMap.keySet().toArray()[i]);
-            System.out.println("Value: " + newMap.values().toArray()[i]);
-        }
-    }
-
-    public void updateMap(){
-        ArrayList<String> nicknames = descriptor.getNicknames();
-        for(String name : nicknames){
-            System.out.println("*****" + name + "*****");
-        }
-
-    }
-
+    @SuppressWarnings("unused")
+//    Used in 'configure-entries.jelly' and 'widget.jelly' takes the map from the descriptor and adds it to jobMap
     public void descNicknameMap(){
         HashMap<String, String> newMap = descriptor.getNicknameMap();
-
-        System.out.println("NewMap keys: " + newMap.keySet().toString());
-        System.out.println("JobMap keys: " + this.jobMap.keySet().toString());
 
         for(int i = 0; i < newMap.size(); ++i){
             for(int j = 0; j < this.jobMap.size(); ++j){
                 if(newMap.keySet().toArray()[i].equals(this.jobMap.keySet().toArray()[j])){
-                    System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!" + newMap.keySet().toArray()[i] + "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-
-                    System.out.println("\n\n\nKey: " + newMap.keySet().toArray()[i].toString() + "\nValue: " + newMap.get(newMap.keySet().toArray()[i].toString()));
-
                     this.jobMap.put(newMap.keySet().toArray()[i].toString(), newMap.get(newMap.keySet().toArray()[i].toString()));
                 }
             }
@@ -169,30 +113,6 @@ public class BuildMonitorView extends ListView {
     public String getTitle() {
         return isGiven(title) ? title : getDisplayName();
     }
-
-    @SuppressWarnings("unused")
-    public String getNickname(){
-        return isGiven(nickname) ? nickname : "Empty";
-    }
-
-    @SuppressWarnings("unused")
-    public void updateNicknameList(){
-        System.out.println("Updated");
-        nicknameList = new ArrayList<String>();
-        for(JobView v : jobViews()){
-            nicknameList.add(v.name());
-        }
-    }
-
-    @SuppressWarnings("unused")
-    public String[] getListAsArray(){
-        String[] nicknameArray = new String[this.nicknameList.size()];
-        for(int i = 0; i < this.nicknameList.size(); ++i){
-            nicknameArray[i] = nicknameList.get(i);
-        }
-        return nicknameArray;
-    }
-
 
     @SuppressWarnings("unused") // used in .jelly
     public boolean isEmpty() {
@@ -236,7 +156,6 @@ public class BuildMonitorView extends ListView {
 
             String requestedOrdering = req.getParameter("order");
             title                    = req.getParameter("title");
-            nickname                 = req.getParameter("nickname");
 
             currentConfig().setDisplayCommitters(json.optBoolean("displayCommitters", true));
 
@@ -256,11 +175,13 @@ public class BuildMonitorView extends ListView {
      * @throws Exception
      */
     @JavaScriptMethod
+    @SuppressWarnings("unused")
     public JSONObject fetchJobViews() throws Exception {
         return Respond.withSuccess(jobViews());
     }
 
     @JavaScriptMethod
+    @SuppressWarnings("unused")
     public JSONObject fetchJobMap() throws IOException{
         return Respond.withSuccess(this.jobMap);
     }
@@ -337,29 +258,4 @@ public class BuildMonitorView extends ListView {
 
     @Deprecated // use Config instead
     private Comparator<Job<?, ?>> order;      // note: this field can be removed when people stop using versions prior to 1.6+build.150
-
-
-    public void addNickname(){
-        System.out.println("*********************NICKNAME ADDED*******************************");
-    }
-
-    public void printArray(){
-        for(int i = 0; i < nicknameArray.length; ++i ){
-            System.out.println("************" + nicknameArray[i] + "************");
-        }
-        System.out.println("__________________________________");
-    }
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

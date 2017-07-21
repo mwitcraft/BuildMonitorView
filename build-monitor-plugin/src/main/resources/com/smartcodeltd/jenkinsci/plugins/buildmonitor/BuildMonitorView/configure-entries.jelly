@@ -37,67 +37,20 @@
     </div>
   </f:entry>
 
-
-
-
-
-
-
-<!--<f:optionalBlock name="usenickname" title="${%Rename jobs for the view}">-->
-    <!--<j:invoke method="getJobMap" on="${it}" var="jobMap"/>-->
-    <!--<j:forEach items="${jobMap}" var="job" indexVar="i">-->
-      <!--<f:entry title="${job.key.name}">-->
-        <!--<f:textbox field="${job.key.name}" value="${job.value}"/>-->
-      <!--</f:entry>-->
-    <!--</j:forEach>-->
-<!--</f:optionalBlock>-->
-
-
-    <f:optionalBlock name="usenewnickname" title="${%Rename jobs for the view2}">
-      <j:invoke method="getJobMap2" on="${it}" var="jobMap"/>
-      <j:invoke method="descNicknameMap" on="${it}"/>
-      <j:forEach items="${h.getAllTopLevelItems(it.ownerItemGroup)}" var="job" indexVar="i">
-        <f:entry title="${job.name}">
-          <j:invoke method="findValue" on="${it}" var="val">
-            <j:arg type="hudson.model.Job" value="${job}"/>
-          </j:invoke>
-          <f:textbox field="nickname" value="${val}"/>
-          <input type="hidden" name="jobName" value="${job.name}"/>
-          <f:validateButton method="addNickname" title="Rename" with="nickname,jobName"/>
-        </f:entry>
-      </j:forEach>
-    </f:optionalBlock>
-
-    <!--<f:optionalBlock name="usenewnickname" title="${%Rename jobs for the view2}">-->
-      <!--<j:invoke method="getJobMap2" on="${it}" var="jobMap"/>-->
-      <!--<j:forEach items="${h.getAllTopLevelItems(it.ownerItemGroup)}" var="job" indexVar="i">-->
-        <!--<f:entry title="${job.name}">-->
-          <!--<j:invoke method="findValue" on="${it}" var="val">-->
-            <!--<j:arg type="hudson.model.Job" value="${job}"/>-->
-          <!--</j:invoke>-->
-          <!--<f:textbox field="nickname" value="${val}"/>-->
-          <!--<input type="hidden" name="jobName" value="${job.name}"/>-->
-          <!--<f:validateButton method="addNickname" title="Rename" with="nickname,jobName"/>-->
-        <!--</f:entry>-->
-      <!--</j:forEach>-->
-      <!--<j:invoke method="descNicknameMap" on="${it}"/>-->
-    <!--</f:optionalBlock>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+  <f:optionalBlock name="usenewnickname" title="${%Rename jobs for the view}">
+    <j:invoke method="getJobMap" on="${it}" var="jobMap"/>
+    <j:invoke method="descNicknameMap" on="${it}"/>
+    <j:forEach items="${h.getAllTopLevelItems(it.ownerItemGroup)}" var="job" indexVar="i">
+      <f:entry title="${job.name}">
+        <j:invoke method="findValue" on="${it}" var="val">
+          <j:arg type="hudson.model.Job" value="${job}"/>
+        </j:invoke>
+        <f:textbox field="nickname" value="${val}"/>
+        <input type="hidden" name="jobName" value="${job.name}"/>
+        <f:validateButton method="addNickname" title="Rename" with="nickname,jobName"/>
+      </f:entry>
+    </j:forEach>
+  </f:optionalBlock>
 
   <f:optionalBlock name="useincluderegex" title="${%Use a regular expression to include jobs into the view}"
                    checked="${it.includeRegex != null}" help="/help/view-config/includeregex.html">
