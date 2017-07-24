@@ -63,7 +63,7 @@ public final class BuildMonitorDescriptor extends ViewDescriptor {
         this.nicknameMap.put(jobName, nickname);
     }
 
-//    Retrieves this.nicknameMap 
+//    Retrieves this.nicknameMap
     public HashMap<String, String> getNicknameMap(){
         return this.nicknameMap;
     }

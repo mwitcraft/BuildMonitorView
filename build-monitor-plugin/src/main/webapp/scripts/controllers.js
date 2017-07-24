@@ -23,29 +23,7 @@ angular.
             $scope.fontSize         = fontSizeFor($scope.jobs, $rootScope.settings.numberOfColumns);
             $scope.map              = [];
 
-            every(5000, function () {
-
-                return fetchJobViews().then(function (response) {
-
-                    $scope.jobs = response.data.data;
-
-                    $rootScope.$broadcast('jenkins:data-fetched', response.data.meta);
-
-                    $scope.fontSize = fontSizeFor($scope.jobs, $rootScope.settings.numberOfColumns);
-
-                }, tryToRecover())
-
-                .then();
-            });
-
-//          Populates $scope.map using jobMap from BuildMonitorView
-            every(5000, function(){
-                return fetchJobMap().then(function(response){
-                    $scope.map = response.data.data;
-                })
-            })
-
-            every(5000, function(){
+            var divideJobs = function(){
                 $scope.successfulJobs = [];
                 $scope.failingJobs = [];
                 for(var i=0; i<$scope.jobs.length; i++){
@@ -56,6 +34,27 @@ angular.
                         $scope.failingJobs.push($scope.jobs[i]);
                     }
                 }
+             };
+
+            var populateJobsArray = function (response) {
+                $scope.jobs = response.data.data;
+
+                $rootScope.$broadcast('jenkins:data-fetched', response.data.meta);
+
+                $scope.fontSize = fontSizeFor($scope.jobs, $rootScope.settings.numberOfColumns);
+            };
+
+            var updateJobs = function() {
+                fetchJobViews().then(populateJobsArray, tryToRecover).then(divideJobs);
+            };
+
+            every(5000, updateJobs);
+
+//          Populates $scope.map using jobMap from BuildMonitorView
+            every(5000, function(){
+                return fetchJobMap().then(function(response){
+                    $scope.map = response.data.data;
+                })
             })
 
             // todo: extract the below as a configuration service, don't rely on $rootScope.settings and make the dependency explicit
