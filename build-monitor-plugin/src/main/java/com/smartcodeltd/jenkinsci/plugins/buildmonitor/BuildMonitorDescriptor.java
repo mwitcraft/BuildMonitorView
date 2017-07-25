@@ -1,12 +1,17 @@
 package com.smartcodeltd.jenkinsci.plugins.buildmonitor;
 
+import com.smartcodeltd.jenkinsci.plugins.buildmonitor.viewmodel.JobView;
 import hudson.Util;
+import hudson.model.Job;
 import hudson.model.ViewDescriptor;
 import hudson.util.FormValidation;
 import net.sf.json.JSONObject;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
+
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -15,9 +20,12 @@ public final class BuildMonitorDescriptor extends ViewDescriptor {
 //    Stores user provided nicknames
     private HashMap<String, String> nicknameMap;
 
+    private List<Job> jobList;
+
     public BuildMonitorDescriptor() {
         super(BuildMonitorView.class);
         nicknameMap = new HashMap<String, String>();
+        jobList = new ArrayList<Job>();
         load();
     }
 
@@ -66,5 +74,24 @@ public final class BuildMonitorDescriptor extends ViewDescriptor {
 //    Retrieves this.nicknameMap
     public HashMap<String, String> getNicknameMap(){
         return this.nicknameMap;
+    }
+
+    public void doAddFilter(@QueryParameter("regexFilterReplace") String replace, @QueryParameter("regexFilterWith") String replaceWith){
+        System.out.println("****************" + replace);
+        System.out.println("****************" + replaceWith);
+        ArrayList<Job> selectedJob = new ArrayList<Job>();
+        for(Job j : this.jobList){
+            String name = "";
+            if(j.getName().contains(replace)) {
+                name = j.getName();
+                name = name.replace(replace, replaceWith);
+                nicknameMap.put(j.getName(), name);
+            }
+        }
+
+    }
+
+    public void supplyJobs(ArrayList<Job> list){
+        this.jobList = list;
     }
 }

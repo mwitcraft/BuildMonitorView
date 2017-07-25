@@ -2,6 +2,11 @@
 
   <!-- BEGIN cut'n'paste from https://github.com/jenkinsci/jenkins/blob/jenkins-1.532/core/src/main/resources/hudson/model/ListView/configure-entries.jelly -->
 
+
+
+
+
+
   <f:section title="${%Job Filters}">
 
   <f:entry title="${%Status Filter}" help="/help/view-config/statusFilter.html">
@@ -21,7 +26,7 @@
     <div class="listview-jobs">
       <j:forEach var="job" items="${h.getAllTopLevelItems(it.ownerItemGroup)}">
         <j:invoke method="populateJobList" on="${it}">
-          <j:arg type="java.lang.String" value="${job.name}"/>
+          <j:arg type="hudson.model.Job" value="${job}"/>
         </j:invoke>
         <j:set var="spanClass" value=""/>
         <j:set var="spanStyle" value=""/>
@@ -37,20 +42,39 @@
     </div>
   </f:entry>
 
-  <f:optionalBlock name="usenewnickname" title="${%Rename jobs for the view}">
-    <j:invoke method="getJobMap" on="${it}" var="jobMap"/>
-    <j:invoke method="descNicknameMap" on="${it}"/>
-    <j:forEach items="${h.getAllTopLevelItems(it.ownerItemGroup)}" var="job" indexVar="i">
-      <f:entry title="${job.name}">
-        <j:invoke method="findValue" on="${it}" var="val">
-          <j:arg type="hudson.model.Job" value="${job}"/>
-        </j:invoke>
-        <f:textbox field="nickname" value="${val}"/>
-        <input type="hidden" name="jobName" value="${job.name}"/>
-        <f:validateButton method="addNickname" title="Rename" with="nickname,jobName"/>
+    <f:optionalBlock name="regexfilter" title="${%Rename jobs with regex filter}">
+      <j:invoke method="supplyJobs" on="${it}"/>
+      <j:invoke method="descNicknameMap" on="${it}"/>
+      <f:entry>
+        <f:entry title="${%Replace}">
+          <f:textbox name="regexFilterReplace"/>
+        </f:entry>
+        <f:entry title="${%with}">
+          <f:textbox name="regexFilterWith"/>
+        </f:entry>
+        <f:validateButton title="Apply Filter" method="addFilter" with="regexFilterReplace,regexFilterWith"/>
       </f:entry>
-    </j:forEach>
-  </f:optionalBlock>
+    </f:optionalBlock>
+
+
+
+
+
+
+  <!--<f:optionalBlock name="usenewnickname" title="${%Rename jobs for the view}">-->
+    <!--<j:invoke method="getJobMap" on="${it}" var="jobMap"/>-->
+    <!--<j:invoke method="descNicknameMap" on="${it}"/>-->
+    <!--<j:forEach items="${h.getAllTopLevelItems(it.ownerItemGroup)}" var="job" indexVar="i">-->
+      <!--<f:entry title="${job.name}">-->
+        <!--<j:invoke method="findValue" on="${it}" var="val">-->
+          <!--<j:arg type="hudson.model.Job" value="${job}"/>-->
+        <!--</j:invoke>-->
+        <!--<f:textbox field="nickname" value="${val}"/>-->
+        <!--<input type="hidden" name="jobName" value="${job.name}"/>-->
+        <!--<f:validateButton method="addNickname" title="Rename" with="nickname,jobName"/>-->
+      <!--</f:entry>-->
+    <!--</j:forEach>-->
+  <!--</f:optionalBlock>-->
 
   <f:optionalBlock name="useincluderegex" title="${%Use a regular expression to include jobs into the view}"
                    checked="${it.includeRegex != null}" help="/help/view-config/includeregex.html">

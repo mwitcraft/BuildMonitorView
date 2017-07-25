@@ -52,6 +52,7 @@ public class BuildMonitorView extends ListView {
 
     private String title;
     private HashMap<String, String> jobMap;
+    ArrayList<Job> jobList;
 
     /**
      * @param name  Name of the view to be displayed on the Views tab
@@ -64,19 +65,28 @@ public class BuildMonitorView extends ListView {
         this.title = title;
 
         jobMap = new HashMap<String, String>();
+
+        jobList = new ArrayList<Job>();
     }
 
     @SuppressWarnings("unused")
 //    Used in 'configure-entries.jelly' just adds name of job to a list, if job name already exists, skips it.
-    public void populateJobList(String jobName){
-        if(jobMap.containsKey(jobName)){
-            return;
-        }
-        else if(jobName == null){
+    public void populateJobList(Job job){
+//        if(jobMap.containsKey(jobName)){
+//            return;
+//        }
+//        else if(jobName == null){
+//            return;
+//        }
+//        else{
+//            jobMap.put(jobName, jobName);
+//        }
+
+        if(jobList.contains(job)){
             return;
         }
         else{
-            jobMap.put(jobName, jobName);
+            jobList.add(job);
         }
     }
 
@@ -258,4 +268,8 @@ public class BuildMonitorView extends ListView {
 
     @Deprecated // use Config instead
     private Comparator<Job<?, ?>> order;      // note: this field can be removed when people stop using versions prior to 1.6+build.150
+
+    public void supplyJobs(){
+        descriptor.supplyJobs(this.jobList);
+    }
 }
