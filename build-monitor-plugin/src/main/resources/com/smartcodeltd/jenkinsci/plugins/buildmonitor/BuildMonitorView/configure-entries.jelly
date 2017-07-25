@@ -45,7 +45,6 @@
     <f:optionalBlock name="regexfilter" title="${%Rename jobs with regex filter}">
       <j:invoke method="supplyJobs" on="${it}"/>
       <j:invoke method="descNicknameMap" on="${it}"/>
-      <f:entry>
         <f:entry title="${%Replace}">
           <f:textbox name="regexFilterReplace"/>
         </f:entry>
@@ -53,7 +52,6 @@
           <f:textbox name="regexFilterWith"/>
         </f:entry>
         <f:validateButton title="Apply Filter" method="addFilter" with="regexFilterReplace,regexFilterWith"/>
-      </f:entry>
     </f:optionalBlock>
 
 

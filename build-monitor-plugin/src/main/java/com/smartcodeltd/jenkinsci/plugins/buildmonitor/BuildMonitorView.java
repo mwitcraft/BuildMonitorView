@@ -72,21 +72,14 @@ public class BuildMonitorView extends ListView {
     @SuppressWarnings("unused")
 //    Used in 'configure-entries.jelly' just adds name of job to a list, if job name already exists, skips it.
     public void populateJobList(Job job){
-//        if(jobMap.containsKey(jobName)){
-//            return;
-//        }
-//        else if(jobName == null){
-//            return;
-//        }
-//        else{
-//            jobMap.put(jobName, jobName);
-//        }
-
-        if(jobList.contains(job)){
+        if(jobMap.containsKey(job.getName())){
+            return;
+        }
+        else if(job.getName() == null){
             return;
         }
         else{
-            jobList.add(job);
+            jobMap.put(job.getName(), job.getName());
         }
     }
 
@@ -270,6 +263,6 @@ public class BuildMonitorView extends ListView {
     private Comparator<Job<?, ?>> order;      // note: this field can be removed when people stop using versions prior to 1.6+build.150
 
     public void supplyJobs(){
-        descriptor.supplyJobs(this.jobList);
+        descriptor.supplyJobs(this.jobMap);
     }
 }

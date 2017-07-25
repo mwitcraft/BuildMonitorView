@@ -77,21 +77,17 @@ public final class BuildMonitorDescriptor extends ViewDescriptor {
     }
 
     public void doAddFilter(@QueryParameter("regexFilterReplace") String replace, @QueryParameter("regexFilterWith") String replaceWith){
-        System.out.println("****************" + replace);
-        System.out.println("****************" + replaceWith);
-        ArrayList<Job> selectedJob = new ArrayList<Job>();
-        for(Job j : this.jobList){
-            String name = "";
-            if(j.getName().contains(replace)) {
-                name = j.getName();
-                name = name.replace(replace, replaceWith);
-                nicknameMap.put(j.getName(), name);
+        for(int i = 0; i < nicknameMap.size(); ++i){
+            String curJobName = (String)nicknameMap.keySet().toArray()[i];
+            if(curJobName.contains(replace)){
+                String newName = curJobName.replace(replace, replaceWith);
+                nicknameMap.put(curJobName, newName);
             }
         }
 
     }
 
-    public void supplyJobs(ArrayList<Job> list){
-        this.jobList = list;
+    public void supplyJobs(HashMap<String, String> jobs){
+        this.nicknameMap = jobs;
     }
 }
