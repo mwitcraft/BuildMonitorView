@@ -17,11 +17,11 @@ angular.
                 fetchJobMap   = proxy.buildMonitor.fetchJobMap,
                 fetchJobViews = proxy.buildMonitor.fetchJobViews;
 
-            $scope.jobs             = [];
-            $scope.successfulJobs   = [];
-            $scope.failingJobs      = [];
-            $scope.fontSize         = fontSizeFor($scope.jobs, $rootScope.settings.numberOfColumns);
-            $scope.map              = [];
+            $scope.jobs                 = [];
+            $scope.successfulJobs       = [];
+            $scope.notSuccessfulJobs    = [];
+            $scope.fontSize             = fontSizeFor($scope.jobs, $rootScope.settings.numberOfColumns);
+            $scope.map                  = [];
 
             var divideJobs = function(){
                 $scope.successfulJobs = [];
@@ -30,8 +30,8 @@ angular.
                     if($scope.jobs[i].status === "successful"){
                         $scope.successfulJobs.push($scope.jobs[i]);
                     }
-                    else if($scope.jobs[i].status === "failing"){
-                        $scope.failingJobs.push($scope.jobs[i]);
+                    else{
+                        $scope.notSuccessfulJobs.push($scope.jobs[i]);
                     }
                 }
              };
