@@ -95,7 +95,15 @@ public final class BuildMonitorDescriptor extends ViewDescriptor {
         return this.regexMap;
     }
 
-    public void doRemoveRenameFilter(@QueryParameter("curKey") String key){
+    public void doRemoveRenameFilter(@QueryParameter("curKey") String key, @QueryParameter("curVal") String val){
+        for(int i = 0; i < this.nicknameMap.size(); ++i){
+            String curName = (String)this.nicknameMap.keySet().toArray()[i];
+            String curNickname = (String)this.nicknameMap.values().toArray()[i];
+            if(curName.contains(key)){
+                String name = curNickname.replace(val, key);
+                this.nicknameMap.put(curName, name);
+            }
+        }
         this.regexMap.remove(key);
     }
 }

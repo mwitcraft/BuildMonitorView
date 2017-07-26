@@ -88,10 +88,12 @@
           <br/>
           Value: ${cur.value}
           <input type="hidden" name="curKey" value="${cur.key}"/>
-          <f:validateButton title="Remove" method="removeRenameFilter" with="curKey"/>
+          <input type="hidden" name="curVal" value="${cur.value}"/>
+          <f:validateButton title="Remove" method="removeRenameFilter" with="curKey,curVal"/>
         </j:forEach>
       </f:entry>
     </f:optionalBlock>
+
 
 
 
