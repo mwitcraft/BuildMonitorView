@@ -52,7 +52,7 @@ public class BuildMonitorView extends ListView {
 
     private String title;
     private HashMap<String, String> jobMap;
-    ArrayList<Job> jobList;
+    private HashMap<String, String> regexSearchReplace;
 
     /**
      * @param name  Name of the view to be displayed on the Views tab
@@ -66,7 +66,7 @@ public class BuildMonitorView extends ListView {
 
         jobMap = new HashMap<String, String>();
 
-        jobList = new ArrayList<Job>();
+        regexSearchReplace = new HashMap<String, String>();
     }
 
     @SuppressWarnings("unused")
@@ -101,6 +101,9 @@ public class BuildMonitorView extends ListView {
     @SuppressWarnings("unused")
 //    Used in 'configure-entries.jelly' and 'widget.jelly' takes the map from the descriptor and adds it to jobMap
     public void descNicknameMap(){
+        regexSearchReplace = descriptor.getRegexMap();
+        for(int i = 0; i < regexSearchReplace.size(); ++i){
+        }
         HashMap<String, String> newMap = descriptor.getNicknameMap();
 
         for(int i = 0; i < newMap.size(); ++i){
@@ -264,5 +267,9 @@ public class BuildMonitorView extends ListView {
 
     public void supplyJobs(){
         descriptor.supplyJobs(this.jobMap);
+    }
+
+    public HashMap<String, String> getRegexMap(){
+        return this.regexSearchReplace;
     }
 }

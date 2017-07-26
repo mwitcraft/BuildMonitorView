@@ -9,9 +9,7 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -19,13 +17,15 @@ public final class BuildMonitorDescriptor extends ViewDescriptor {
 
 //    Stores user provided nicknames
     private HashMap<String, String> nicknameMap;
+    private HashMap<String, String> jobMap;
+    private HashMap<String, String> regexMap;
 
-    private List<Job> jobList;
 
     public BuildMonitorDescriptor() {
         super(BuildMonitorView.class);
         nicknameMap = new HashMap<String, String>();
-        jobList = new ArrayList<Job>();
+        jobMap = new HashMap<String, String>();
+        regexMap = new HashMap<String, String>();
         load();
     }
 
@@ -77,17 +77,25 @@ public final class BuildMonitorDescriptor extends ViewDescriptor {
     }
 
     public void doAddFilter(@QueryParameter("regexFilterReplace") String replace, @QueryParameter("regexFilterWith") String replaceWith){
-        for(int i = 0; i < nicknameMap.size(); ++i){
-            String curJobName = (String)nicknameMap.keySet().toArray()[i];
+        for(int i = 0; i < jobMap.size(); ++i){
+            String curJobName = (String)jobMap.keySet().toArray()[i];
             if(curJobName.contains(replace)){
+                regexMap.put(replace, replaceWith);
                 String newName = curJobName.replace(replace, replaceWith);
                 nicknameMap.put(curJobName, newName);
             }
         }
-
     }
 
     public void supplyJobs(HashMap<String, String> jobs){
-        this.nicknameMap = jobs;
+        this.jobMap = jobs;
+    }
+
+    public HashMap<String, String> getRegexMap(){
+        return this.regexMap;
+    }
+
+    public void doRemoveRenameFilter(@QueryParameter("curKey") String key){
+        this.regexMap.remove(key);
     }
 }

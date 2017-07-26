@@ -42,17 +42,120 @@
     </div>
   </f:entry>
 
+    <!--<f:optionalBlock name="regexfilter" title="${%Rename jobs with regex filter}">-->
+      <!--<j:invoke method="supplyJobs" on="${it}"/>-->
+      <!--<j:invoke method="descNicknameMap" on="${it}"/>-->
+        <!--<f:entry title="${%Replace}">-->
+          <!--<f:textbox name="regexFilterReplace"/>-->
+        <!--</f:entry>-->
+        <!--<f:entry title="${%with}">-->
+          <!--<f:textbox name="regexFilterWith"/>-->
+        <!--</f:entry>-->
+        <!--<f:validateButton title="Apply Filter" method="addFilter" with="regexFilterReplace,regexFilterWith"/>-->
+      <!--<j:forEach var="current" items="${descriptor.regexMap}" varStatus="loop">-->
+        <!--<f:textbox field="key" value="${current.key}"/>-->
+        <!--<f:textbox field="val" value="${current.value}"/>-->
+      <!--</j:forEach>-->
+    <!--</f:optionalBlock>-->
+
+
     <f:optionalBlock name="regexfilter" title="${%Rename jobs with regex filter}">
       <j:invoke method="supplyJobs" on="${it}"/>
       <j:invoke method="descNicknameMap" on="${it}"/>
-        <f:entry title="${%Replace}">
-          <f:textbox name="regexFilterReplace"/>
-        </f:entry>
-        <f:entry title="${%with}">
-          <f:textbox name="regexFilterWith"/>
-        </f:entry>
-        <f:validateButton title="Apply Filter" method="addFilter" with="regexFilterReplace,regexFilterWith"/>
+      <f:entry title="${%Replace}">
+        <f:textbox name="regexFilterReplace"/>
+      </f:entry>
+      <f:entry title="${%with}">
+        <f:textbox name="regexFilterWith"/>
+      </f:entry>
+      <f:validateButton title="Rename" method="addFilter" with="regexFilterReplace,regexFilterWith"/>
     </f:optionalBlock>
+
+    <!--<f:entry>-->
+      <!--<j:set var="key" value=""/>-->
+      <!--<j:set var="val" value=""/>-->
+      <!--<j:invoke on="${it}" method="getRegexMap" var="rMap"/>-->
+      <!--<f:repeatable var="current" items="${rMap}" minimum="1">-->
+        <!--<f:textbox-->
+      <!--</f:repeatable>-->
+      <!--<f:validateButton method="addFilter" title="Rename"/>-->
+    <!--</f:entry>-->
+
+    <f:optionalBlock name="showFilters" title="${%Show current renaming filters}">
+      <f:entry>
+        <j:forEach var="cur" items="${descriptor.regexMap}">
+          Key: ${cur.key}
+          <br/>
+          Value: ${cur.value}
+          <input type="hidden" name="curKey" value="${cur.key}"/>
+          <f:validateButton title="Remove" method="removeRenameFilter" with="curKey"/>
+        </j:forEach>
+      </f:entry>
+    </f:optionalBlock>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!--<f:optionalBlock name="showRename" title="${%Show current naming filters}">-->
+      <!--<f:entry>-->
+        <!--<j:invoke on="${it}" method="getRegexMap" var="rMap"/>-->
+        <!--${rMap}-->
+        <!--<j:forEach items="${rMap}" var="i">-->
+          <!--Key:<f:textbox field="key" value="${i.key}"/>-->
+          <!--Value:<f:textbox field="val" value="${i.value}"/>-->
+          <!--<f:validateButton title="Delete" method="removeRenameFilter" with="${i.key}"/>-->
+        <!--</j:forEach>-->
+      <!--</f:entry>-->
+    <!--</f:optionalBlock>-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
