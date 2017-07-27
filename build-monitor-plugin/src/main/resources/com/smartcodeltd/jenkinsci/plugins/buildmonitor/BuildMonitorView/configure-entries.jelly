@@ -59,6 +59,20 @@
     <!--</f:optionalBlock>-->
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <f:optionalBlock name="regexfilter" title="${%Rename jobs with regex filter}">
       <j:invoke method="supplyJobs" on="${it}"/>
       <j:invoke method="descNicknameMap" on="${it}"/>
@@ -70,6 +84,28 @@
       </f:entry>
       <f:validateButton title="Rename" method="addFilter" with="regexFilterReplace,regexFilterWith"/>
     </f:optionalBlock>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     <!--<f:entry>-->
       <!--<j:set var="key" value=""/>-->
@@ -84,12 +120,16 @@
     <f:optionalBlock name="showFilters" title="${%Show current renaming filters}">
       <f:entry>
         <j:forEach var="cur" items="${descriptor.regexMap}">
-          Key: ${cur.key}
-          <br/>
-          Value: ${cur.value}
-          <input type="hidden" name="curKey" value="${cur.key}"/>
-          <input type="hidden" name="curVal" value="${cur.value}"/>
-          <f:validateButton title="Remove" method="removeRenameFilter" with="curKey,curVal"/>
+          <f:entry>
+            Key: ${cur.key}
+            <br/>
+            Value: ${cur.value}
+            <input type="hidden" name="curKey" value="${cur.key}"/>
+            <input type="hidden" name="curVal" value="${cur.value}"/>
+          </f:entry>
+          <f:entry>
+            <f:validateButton title="Remove" method="removeRenameFilter" with="curKey,curVal"/>
+          </f:entry>
         </j:forEach>
       </f:entry>
     </f:optionalBlock>
