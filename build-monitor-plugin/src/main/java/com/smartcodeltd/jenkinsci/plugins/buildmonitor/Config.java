@@ -5,12 +5,16 @@ import com.smartcodeltd.jenkinsci.plugins.buildmonitor.order.ByName;
 import hudson.model.Job;
 
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.Properties;
 
 import static com.smartcodeltd.jenkinsci.plugins.buildmonitor.functions.NullSafety.getOrElse;
 
 public class Config {
 
     private boolean displayCommitters;
+
+    private Properties props;
 
     public static Config defaultConfig() {
         return new Config();
@@ -42,6 +46,8 @@ public class Config {
 
     @Override
     public String toString() {
+        props.setProperty("test", "test");
+
         return Objects.toStringHelper(this)
                 .add("order", order.getClass().getSimpleName())
                 .toString();

@@ -39,6 +39,7 @@ import org.kohsuke.stapler.bind.JavaScriptMethod;
 
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 import static hudson.Util.filter;
@@ -51,8 +52,11 @@ public class BuildMonitorView extends ListView {
     public static final BuildMonitorDescriptor descriptor = new BuildMonitorDescriptor();
 
     private String title;
+    private HashMap<String, String> vanillaJobMap;
     private HashMap<String, String> jobMap;
     private HashMap<String, String> regexSearchReplace;
+    private String newKey;
+    private String newVal;
 
     /**
      * @param name  Name of the view to be displayed on the Views tab
@@ -64,9 +68,13 @@ public class BuildMonitorView extends ListView {
 
         this.title = title;
 
+        vanillaJobMap = new HashMap<String, String>();
+
         jobMap = new HashMap<String, String>();
 
         regexSearchReplace = new HashMap<String, String>();
+
+
     }
 
     @SuppressWarnings("unused")
@@ -80,6 +88,7 @@ public class BuildMonitorView extends ListView {
         }
         else{
             jobMap.put(job.getName(), job.getName());
+            vanillaJobMap.put(job.getName(), job.getName());
         }
     }
 
@@ -101,9 +110,6 @@ public class BuildMonitorView extends ListView {
     @SuppressWarnings("unused")
 //    Used in 'configure-entries.jelly' and 'widget.jelly' takes the map from the descriptor and adds it to jobMap
     public void descNicknameMap(){
-        regexSearchReplace = descriptor.getRegexMap();
-        for(int i = 0; i < regexSearchReplace.size(); ++i){
-        }
         HashMap<String, String> newMap = descriptor.getNicknameMap();
 
         for(int i = 0; i < newMap.size(); ++i){
@@ -158,10 +164,24 @@ public class BuildMonitorView extends ListView {
 
         JSONObject json = req.getSubmittedForm();
 
+        List<String> keyList = new ArrayList<String>();
+        List<String> valList = new ArrayList<String>();
+
         synchronized (this) {
 
             String requestedOrdering = req.getParameter("order");
             title                    = req.getParameter("title");
+
+            this.regexSearchReplace.clear();
+            try {
+                keyList = Arrays.asList(req.getParameterValues("curKey"));
+                valList = Arrays.asList(req.getParameterValues("curVal"));
+//                System.out.println("Keys: " + keyList.toString());
+//                System.out.println("Values: " + valList.toString());
+                applyNicknames(keyList, valList);
+            }catch (NullPointerException e){
+                applyNicknames(null, null);
+            }
 
             currentConfig().setDisplayCommitters(json.optBoolean("displayCommitters", true));
 
@@ -269,7 +289,27 @@ public class BuildMonitorView extends ListView {
         descriptor.supplyJobs(this.jobMap);
     }
 
-    public HashMap<String, String> getRegexMap(){
+    public HashMap<String, String> getRegexSearchReplace(){
         return this.regexSearchReplace;
+    }
+
+    private void applyNicknames(List<String> keys, List<String> vals){
+        for(int i = 0; i < vanillaJobMap.size(); ++i){
+            jobMap.put((String)vanillaJobMap.keySet().toArray()[i], (String)vanillaJobMap.values().toArray()[i]);
+        }
+
+        if(keys != null && vals != null){
+            for(int i = 0; i < jobMap.size(); ++i){
+                String curJobName = (String)jobMap.keySet().toArray()[i];
+                String curJobNickname = (String)jobMap.values().toArray()[i];
+                for(int j = 0; j < keys.size(); ++j){
+                    if(curJobName.contains(keys.get(j))){
+                        this.regexSearchReplace.put(keys.get(j), vals.get(j));
+                        curJobNickname = curJobNickname.replace(keys.get(j), vals.get(j));
+                        jobMap.put(curJobName, curJobNickname);
+                    }
+                }
+            }
+        }
     }
 }

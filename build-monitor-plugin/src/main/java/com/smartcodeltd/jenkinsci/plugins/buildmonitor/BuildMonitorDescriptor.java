@@ -9,7 +9,10 @@ import net.sf.json.JSONObject;
 import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
@@ -105,5 +108,21 @@ public final class BuildMonitorDescriptor extends ViewDescriptor {
             }
         }
         this.regexMap.remove(key);
+    }
+
+    public void doPrintSomething() {
+        ArrayList<String> aList = new ArrayList<String>();
+        aList.add("Mason");
+        aList.add("Reece");
+
+        try {
+            for (int i = 0; i < 17; ++i) {
+                System.out.println(aList.get(i));
+            }
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Out of Bounds");
+        } finally {
+            System.out.println("Finally");
+        }
     }
 }
