@@ -52,7 +52,6 @@ public class BuildMonitorView extends ListView {
     public static final BuildMonitorDescriptor descriptor = new BuildMonitorDescriptor();
 
     private String title;
-    private HashMap<String, String> vanillaJobMap;
     private HashMap<String, String> jobMap;
     private HashMap<String, String> regexSearchReplace;
     private String newKey;
@@ -67,8 +66,6 @@ public class BuildMonitorView extends ListView {
         super(name);
 
         this.title = title;
-
-        vanillaJobMap = new HashMap<String, String>();
 
         jobMap = new HashMap<String, String>();
 
@@ -88,7 +85,6 @@ public class BuildMonitorView extends ListView {
         }
         else{
             jobMap.put(job.getName(), job.getName());
-            vanillaJobMap.put(job.getName(), job.getName());
         }
     }
 
@@ -176,8 +172,6 @@ public class BuildMonitorView extends ListView {
             try {
                 keyList = Arrays.asList(req.getParameterValues("curKey"));
                 valList = Arrays.asList(req.getParameterValues("curVal"));
-//                System.out.println("Keys: " + keyList.toString());
-//                System.out.println("Values: " + valList.toString());
                 applyNicknames(keyList, valList);
             }catch (NullPointerException e){
                 applyNicknames(null, null);
@@ -294,18 +288,21 @@ public class BuildMonitorView extends ListView {
     }
 
     private void applyNicknames(List<String> keys, List<String> vals){
-        for(int i = 0; i < vanillaJobMap.size(); ++i){
-            jobMap.put((String)vanillaJobMap.keySet().toArray()[i], (String)vanillaJobMap.values().toArray()[i]);
+        for(String keyVal : jobMap.keySet()){
+            jobMap.put(keyVal, keyVal);
         }
 
         if(keys != null && vals != null){
             for(int i = 0; i < jobMap.size(); ++i){
                 String curJobName = (String)jobMap.keySet().toArray()[i];
-                String curJobNickname = (String)jobMap.values().toArray()[i];
+                String curJobNickname = "";
                 for(int j = 0; j < keys.size(); ++j){
-                    if(curJobName.contains(keys.get(j))){
+                    if(keys.get(j) == "" && vals.get(j) == ""){
+
+                    }
+                    else if(curJobName.contains(keys.get(j))){
                         this.regexSearchReplace.put(keys.get(j), vals.get(j));
-                        curJobNickname = curJobNickname.replace(keys.get(j), vals.get(j));
+                        curJobNickname = jobMap.get(curJobName).replace(keys.get(j), vals.get(j));
                         jobMap.put(curJobName, curJobNickname);
                     }
                 }

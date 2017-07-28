@@ -55,13 +55,11 @@ public class Config {
     }
 
     public void setProps(HashMap<String, String> map){
+        props.clear();
         if(map != null){
             for(int i = 0; i < map.size(); ++i){
                 props.put((String)map.keySet().toArray()[i], (String)map.values().toArray()[i]);
             }
-        }
-        else{
-            props.clear();
         }
     }
 

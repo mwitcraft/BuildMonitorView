@@ -36,57 +36,13 @@
       </div>
     </f:entry>
 
-    <f:optionalBlock name="regexfilter" title="${%Rename jobs with regex filter}">
-      <j:invoke method="supplyJobs" on="${it}"/>
-      <j:invoke method="descNicknameMap" on="${it}"/>
-      <f:entry title="${%Replace}">
-        <f:textbox name="regexFilterReplace"/>
-      </f:entry>
-      <f:entry title="${%with}">
-        <f:textbox name="regexFilterWith"/>
-      </f:entry>
-      <f:validateButton title="Rename" method="addFilter" with="regexFilterReplace,regexFilterWith"/>
-    </f:optionalBlock>
-
-    <f:optionalBlock name="showFilters" title="${%Show current renaming filters}">
-      <f:entry>
-        <j:forEach var="cur" items="${descriptor.regexMap}">
-          <f:entry>
-            Key: ${cur.key}
-            <br/>
-            Value: ${cur.value}
-            <input type="hidden" name="curKey" value="${cur.key}"/>
-            <input type="hidden" name="curVal" value="${cur.value}"/>
-          </f:entry>
-          <f:entry>
-            <f:validateButton title="Remove" method="removeRenameFilter" with="curKey,curVal"/>
-          </f:entry>
-        </j:forEach>
-      </f:entry>
-    </f:optionalBlock>
-
-    <!--<f:optionalBlock name="oBlock" title="${%Option}">-->
-      <!--<f:entry>-->
-        <!--<f:repeatable name="xRepeat" var="i" items="${it.regexSearchReplace}" minimum="1" varStatus="xBlock">-->
-          <!--<j:set var="y" value="Mason"/>-->
-          <!--<br/><br/>-->
-          <!--Key: <f:textbox name="curKey" value="${i.key}"/>-->
-          <!--Value: <f:textbox name="curVal" value="${i.value}"/>-->
-          <!--<br/><br/>-->
-          <!--<div align="right"><input type="button" value="${%Delete}" class="repeatable-delete"/></div>-->
-          <!--<br/><br/>-->
-        <!--</f:repeatable>-->
-      <!--</f:entry>-->
-    <!--</f:optionalBlock>-->
-
-    <f:optionalBlock title="option">
-      <f:entry>
-        <f:repeatable var="cur" items="${instance.regexSearchReplace}">
+      <f:entry field="props">
+        <f:repeatable var="cur" items="${instance.regexSearchReplace}" add="Add Rename Filter">
           <table width="100%">
-            <f:entry title="${%Key}">
+            <f:entry title="${%Replace}">
               <f:textbox name="curKey" field="curKey" value="${cur.key}"/>
             </f:entry>
-            <f:entry title="${%Value}">
+            <f:entry title="${%with}">
               <f:textbox name="curVal" field="curVal" value="${cur.value}"/>
             </f:entry>
             <f:entry title="">
@@ -97,115 +53,6 @@
           </table>
         </f:repeatable>
       </f:entry>
-    </f:optionalBlock>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-      <!--<f:optionalBlock name="showRename" title="${%Show current naming filters}">-->
-        <!--<f:entry>-->
-          <!--<j:invoke on="${it}" method="getRegexMap" var="rMap"/>-->
-          <!--${rMap}-->
-          <!--<j:forEach items="${rMap}" var="i">-->
-            <!--Key:<f:textbox field="key" value="${i.key}"/>-->
-            <!--Value:<f:textbox field="val" value="${i.value}"/>-->
-            <!--<f:validateButton title="Delete" method="removeRenameFilter" with="${i.key}"/>-->
-          <!--</j:forEach>-->
-        <!--</f:entry>-->
-      <!--</f:optionalBlock>-->
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    <!--<f:optionalBlock name="usenewnickname" title="${%Rename jobs for the view}">-->
-      <!--<j:invoke method="getJobMap" on="${it}" var="jobMap"/>-->
-      <!--<j:invoke method="descNicknameMap" on="${it}"/>-->
-      <!--<j:forEach items="${h.getAllTopLevelItems(it.ownerItemGroup)}" var="job" indexVar="i">-->
-        <!--<f:entry title="${job.name}">-->
-          <!--<j:invoke method="findValue" on="${it}" var="val">-->
-            <!--<j:arg type="hudson.model.Job" value="${job}"/>-->
-          <!--</j:invoke>-->
-          <!--<f:textbox field="nickname" value="${val}"/>-->
-          <!--<input type="hidden" name="jobName" value="${job.name}"/>-->
-          <!--<f:validateButton method="addNickname" title="Rename" with="nickname,jobName"/>-->
-        <!--</f:entry>-->
-      <!--</j:forEach>-->
-    <!--</f:optionalBlock>-->
 
     <f:optionalBlock name="useincluderegex" title="${%Use a regular expression to include jobs into the view}"
                      checked="${it.includeRegex != null}" help="/help/view-config/includeregex.html">
@@ -240,26 +87,6 @@
         <f:option value="ByEstimatedDuration" selected="${it.currentOrder()=='ByEstimatedDuration'}">${%Estimated duration}</f:option>
       </select>
     </f:entry>
-
-    <f:optionalBlock title="Trial">
-      <f:entry field="props">
-        <f:repeatable var="cur" items="${instance.regexSearchReplace}">
-          <table width="100%">
-            <f:entry title="${%Key}">
-              <f:textbox name="curKey" field="curKey" value="${cur.key}"/>
-            </f:entry>
-            <f:entry title="${%Value}">
-              <f:textbox name="curVal" field="curVal" value="${cur.value}"/>
-            </f:entry>
-            <f:entry title="">
-              <div align="right">
-                <f:repeatableDeleteButton/>
-              </div>
-            </f:entry>
-          </table>
-        </f:repeatable>
-      </f:entry>
-    </f:optionalBlock>
 
   </f:section>
 
