@@ -14,7 +14,7 @@ public class Config {
 
     private boolean displayCommitters;
 
-    private Properties props;
+    private Properties props = new Properties();
 
     public static Config defaultConfig() {
         return new Config();
@@ -49,8 +49,20 @@ public class Config {
         props.setProperty("test", "test");
 
         return Objects.toStringHelper(this)
+                .add("props", props.toString())
                 .add("order", order.getClass().getSimpleName())
                 .toString();
+    }
+
+    public void setProps(HashMap<String, String> map){
+        if(map != null){
+            for(int i = 0; i < map.size(); ++i){
+                props.put((String)map.keySet().toArray()[i], (String)map.values().toArray()[i]);
+            }
+        }
+        else{
+            props.clear();
+        }
     }
 
     // --

@@ -241,6 +241,26 @@
       </select>
     </f:entry>
 
+    <f:optionalBlock title="Trial">
+      <f:entry field="props">
+        <f:repeatable var="cur" items="${instance.regexSearchReplace}">
+          <table width="100%">
+            <f:entry title="${%Key}">
+              <f:textbox name="curKey" field="curKey" value="${cur.key}"/>
+            </f:entry>
+            <f:entry title="${%Value}">
+              <f:textbox name="curVal" field="curVal" value="${cur.value}"/>
+            </f:entry>
+            <f:entry title="">
+              <div align="right">
+                <f:repeatableDeleteButton/>
+              </div>
+            </f:entry>
+          </table>
+        </f:repeatable>
+      </f:entry>
+    </f:optionalBlock>
+
   </f:section>
 
   <f:section title="${%Build Monitor - Widget Settings}">

@@ -311,5 +311,7 @@ public class BuildMonitorView extends ListView {
                 }
             }
         }
+
+        currentConfig().setProps(regexSearchReplace);
     }
 }
