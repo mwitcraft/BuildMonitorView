@@ -37,7 +37,7 @@
     </f:entry>
 
       <f:entry field="props">
-        <f:repeatable var="cur" items="${instance.regexSearchReplace}" add="Add Rename Filter">
+        <f:repeatable var="cur" items="${instance.getRegexMap()}" add="Add Rename Filter">
           <table width="100%">
             <f:entry title="${%Replace}">
               <f:textbox name="curKey" field="curKey" value="${cur.key}"/>

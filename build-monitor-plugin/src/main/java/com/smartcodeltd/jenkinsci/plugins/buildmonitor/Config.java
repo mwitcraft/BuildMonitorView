@@ -1,6 +1,7 @@
 package com.smartcodeltd.jenkinsci.plugins.buildmonitor;
 
 import com.google.common.base.Objects;
+import com.mongodb.util.Hash;
 import com.smartcodeltd.jenkinsci.plugins.buildmonitor.order.ByName;
 import hudson.model.Job;
 
@@ -14,7 +15,7 @@ public class Config {
 
     private boolean displayCommitters;
 
-    private Properties props = new Properties();
+    private Properties renameFilters = new Properties();
 
     public static Config defaultConfig() {
         return new Config();
@@ -46,21 +47,29 @@ public class Config {
 
     @Override
     public String toString() {
-        props.setProperty("test", "test");
+        this.renameFilters.setProperty("test", "test");
 
         return Objects.toStringHelper(this)
-                .add("props", props.toString())
+                .add("renameFilters", this.renameFilters.toString())
                 .add("order", order.getClass().getSimpleName())
                 .toString();
     }
 
-    public void setProps(HashMap<String, String> map){
-        props.clear();
+    public void setRenameFilters(HashMap<String, String> map){
+        this.renameFilters.clear();
         if(map != null){
             for(int i = 0; i < map.size(); ++i){
-                props.put((String)map.keySet().toArray()[i], (String)map.values().toArray()[i]);
+                this.renameFilters.put((String)map.keySet().toArray()[i], (String)map.values().toArray()[i]);
             }
         }
+    }
+
+    public HashMap<String, String> getRenameFilters(){
+        HashMap<String, String> map = new HashMap<String, String>();
+        for(int i = 0; i < renameFilters.size(); ++i){
+            map.put((String)this.renameFilters.keySet().toArray()[i], (String)this.renameFilters.values().toArray()[i]);
+        }
+        return map;
     }
 
     // --

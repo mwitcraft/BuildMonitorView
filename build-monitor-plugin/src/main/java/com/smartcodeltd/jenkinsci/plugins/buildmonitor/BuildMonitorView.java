@@ -283,14 +283,11 @@ public class BuildMonitorView extends ListView {
         descriptor.supplyJobs(this.jobMap);
     }
 
-    public HashMap<String, String> getRegexSearchReplace(){
-        return this.regexSearchReplace;
-    }
-
     private void applyNicknames(List<String> keys, List<String> vals){
         for(String keyVal : jobMap.keySet()){
             jobMap.put(keyVal, keyVal);
         }
+        HashMap<String, String> regexMap = new HashMap<String, String>();
 
         if(keys != null && vals != null){
             for(int i = 0; i < jobMap.size(); ++i){
@@ -301,7 +298,7 @@ public class BuildMonitorView extends ListView {
 
                     }
                     else if(curJobName.contains(keys.get(j))){
-                        this.regexSearchReplace.put(keys.get(j), vals.get(j));
+                        regexMap.put(keys.get(j), vals.get(j));
                         curJobNickname = jobMap.get(curJobName).replace(keys.get(j), vals.get(j));
                         jobMap.put(curJobName, curJobNickname);
                     }
@@ -309,6 +306,14 @@ public class BuildMonitorView extends ListView {
             }
         }
 
-        currentConfig().setProps(regexSearchReplace);
+        currentConfig().setRenameFilters(regexMap);
+    }
+
+    public HashMap<String, String> getRegexMap(){
+        HashMap<String, String> map = new HashMap<String, String>();
+        for(String key : currentConfig().getRenameFilters().keySet()){
+            map.put(key, currentConfig().getRenameFilters().get(key));
+        }
+        return map;
     }
 }
