@@ -4,43 +4,54 @@
     <!-- ng-style allows for all widgets to be resized based on user action-->
     <div ng-style="{ 'font-size': (fontSize * settings.fontSize) + vmax}">
 
-        <!-- Style removes bullet points from side of badges-->
-        <li style="list-style-type: none">
-            <div style=" position: fixed; bottom: 25px; left:10px; right:10px;" class="successful basic project widget">
-                <!-- If not all jobs are successful-->
-                <span ng-if="!(jobs.length === successfulJobs.length)">
-                    <header>
-                        <h2>
-                            <a title="Success Badge" href="">{{successfulJobs.length}}/{{jobs.length}} job(s) passing
-                            </a>
-                        </h2>
-                    </header>
-                </span>
-            </div>
-            <!-- If all jobs are successful -->
-            <div class="successful basic project widget">
-                <span ng-if="jobs.length === successfulJobs.length">
-                    <!-- Sets margins and font size so badge will take up full screen -->
-                    <div style="margin:35vmin 0 35vmin 0; font-size:3vmin">
+        <!--If user checks to collapse successful builds-->
+        <j:if test="${it.collapse}">
+            <!-- Style removes bullet points from side of badges-->
+            <li style="list-style-type: none">
+                <div style=" position: fixed; bottom: 25px; left:10px; right:10px;" class="successful basic project widget">
+                    <!-- If not all jobs are successful-->
+                    <span ng-if="!(jobs.length === successfulJobs.length)">
                         <header>
                             <h2>
-                                <a title="Success Badge" href="">{{successfulJobs.length}}/{{jobs.length}} job(s)
-                                    passing
+                                <a title="Success Badge" href="">{{successfulJobs.length}}/{{jobs.length}} job(s) passing
                                 </a>
                             </h2>
                         </header>
-                        <p align="center">all builds passed</p>
-                    </div>
-                </span>
-            </div>
-        </li>
+                    </span>
+                </div>
+                <!-- If all jobs are successful -->
+                <div class="successful basic project widget">
+                    <span ng-if="jobs.length === successfulJobs.length">
+                        <!-- Sets margins and font size so badge will take up full screen -->
+                        <div style="margin:35vmin 0 35vmin 0; font-size:3vmin">
+                            <header>
+                                <h2>
+                                    <a title="Success Badge" href="">{{successfulJobs.length}}/{{jobs.length}} job(s)
+                                        passing
+                                    </a>
+                                </h2>
+                            </header>
+                            <p align="center">all builds passed</p>
+                        </div>
+                    </span>
+                </div>
+            </li>
+        </j:if>
 
         <!--Creates the widgets for all jobs that are not successful-->
         <ul id="widgets"
             data-viewport-units=""
             class="columns-{{ settings.numberOfColumns }}"
         >
-            <li ng-repeat="project in notSuccessfulJobs track by project.hashCode">
+            <!--Sets what array of jobs to step through depending on whether or not user selects to collapse successful builds-->
+            <j:if test="${!it.collapse}">
+                <j:set var="ifCollapse" value="jobs"/>
+            </j:if>
+            <j:if test="${it.collapse}">
+                <j:set var="ifCollapse" value="notSuccessfulJobs"/>
+            </j:if>
+
+            <li ng-repeat="project in ${ifCollapse} track by project.hashCode">
                 <div class="{{project.status}} basic project widget"
                      data-ng-class="{ 'claimed': !! project.claim.active }"
                      id="{{ project.name | slugify }}"

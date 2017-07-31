@@ -53,7 +53,8 @@ public class BuildMonitorView extends ListView {
 
     private String title;
     private HashMap<String, String> jobMap;
-    
+    private Boolean collapse;
+
     /**
      * @param name  Name of the view to be displayed on the Views tab
      * @param title Title to be displayed on the Build Monitor; defaults to 'name' if not set
@@ -65,6 +66,8 @@ public class BuildMonitorView extends ListView {
         this.title = title;
 
         jobMap = new HashMap<String, String>();
+
+        collapse = false;
     }
 
     @SuppressWarnings("unused")
@@ -138,6 +141,13 @@ public class BuildMonitorView extends ListView {
                 applyNicknames(keyList, valList);
             }catch (NullPointerException e){
                 applyNicknames(null, null);
+            }
+
+            String strCollapse = req.getParameter("collapse");
+            if(strCollapse == null){
+                collapse = false;
+            }else{
+                collapse = true;
             }
 
             currentConfig().setDisplayCommitters(json.optBoolean("displayCommitters", true));
@@ -276,5 +286,13 @@ public class BuildMonitorView extends ListView {
             map.put(key, currentConfig().getRenameFilters().get(key));
         }
         return map;
+    }
+
+    public void printSomething(){
+        System.out.println("+++++++++++++++++++++++++++ Printed +++++++++++++++++++++");
+    }
+
+    public Boolean getCollapse(){
+        return this.collapse;
     }
 }

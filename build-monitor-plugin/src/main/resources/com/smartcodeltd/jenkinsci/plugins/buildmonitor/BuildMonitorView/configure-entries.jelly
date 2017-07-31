@@ -15,6 +15,10 @@
       <f:checkbox id="recurse"/>
     </f:entry>
 
+    <f:entry title="${%Collapse successful builds}" field="collapse">
+      <f:checkbox name="collapse" checked="${it.collapse}"/>
+    </f:entry>
+
     <f:entry title="${%Jobs}">
       <p>${h.getAllTopLevelItems(it.ownerItemGroup).class}</p>
       <div class="listview-jobs">
