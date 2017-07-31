@@ -53,7 +53,6 @@ public class BuildMonitorView extends ListView {
 
     private String title;
     private HashMap<String, String> jobMap;
-    private HashMap<String, String> regexSearchReplace;
     private String newKey;
     private String newVal;
 
@@ -68,10 +67,6 @@ public class BuildMonitorView extends ListView {
         this.title = title;
 
         jobMap = new HashMap<String, String>();
-
-        regexSearchReplace = new HashMap<String, String>();
-
-
     }
 
     @SuppressWarnings("unused")
@@ -168,7 +163,6 @@ public class BuildMonitorView extends ListView {
             String requestedOrdering = req.getParameter("order");
             title                    = req.getParameter("title");
 
-            this.regexSearchReplace.clear();
             try {
                 keyList = Arrays.asList(req.getParameterValues("curKey"));
                 valList = Arrays.asList(req.getParameterValues("curVal"));
