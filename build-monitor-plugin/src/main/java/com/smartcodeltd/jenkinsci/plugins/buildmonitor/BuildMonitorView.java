@@ -134,6 +134,7 @@ public class BuildMonitorView extends ListView {
 
             String requestedOrdering = req.getParameter("order");
             title                    = req.getParameter("title");
+            collapse                 = ifCollapse(req.getParameter("collapse"));
 
             try {
                 keyList = Arrays.asList(req.getParameterValues("curKey"));
@@ -141,13 +142,6 @@ public class BuildMonitorView extends ListView {
                 applyNicknames(keyList, valList);
             }catch (NullPointerException e){
                 applyNicknames(null, null);
-            }
-
-            String strCollapse = req.getParameter("collapse");
-            if(strCollapse == null){
-                collapse = false;
-            }else{
-                collapse = true;
             }
 
             currentConfig().setDisplayCommitters(json.optBoolean("displayCommitters", true));
@@ -288,11 +282,15 @@ public class BuildMonitorView extends ListView {
         return map;
     }
 
-    public void printSomething(){
-        System.out.println("+++++++++++++++++++++++++++ Printed +++++++++++++++++++++");
-    }
-
     public Boolean getCollapse(){
         return this.collapse;
+    }
+
+    private boolean ifCollapse(String x){
+        if(x == null){
+            return false;
+        }else{
+            return true;
+        }
     }
 }
