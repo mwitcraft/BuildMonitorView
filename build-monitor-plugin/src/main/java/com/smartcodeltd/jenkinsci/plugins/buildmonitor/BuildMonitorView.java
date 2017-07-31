@@ -53,9 +53,7 @@ public class BuildMonitorView extends ListView {
 
     private String title;
     private HashMap<String, String> jobMap;
-    private String newKey;
-    private String newVal;
-
+    
     /**
      * @param name  Name of the view to be displayed on the Views tab
      * @param title Title to be displayed on the Build Monitor; defaults to 'name' if not set
@@ -80,35 +78,6 @@ public class BuildMonitorView extends ListView {
         }
         else{
             jobMap.put(job.getName(), job.getName());
-        }
-    }
-
-    @SuppressWarnings("unused")
-//    Used in 'configure-entries.jelly' returns the jobMap containing the job names and nicknames
-    public HashMap<String, String> getJobMap(){
-        jobMap.remove("");
-        jobMap.remove(null);
-        return this.jobMap;
-    }
-
-    @SuppressWarnings("unused")
-//    Used in 'configure-entries.jelly' returns the nickname for a given job
-    public String findValue(Job job){
-        String val = this.jobMap.get(job.getName());
-        return val;
-    }
-
-    @SuppressWarnings("unused")
-//    Used in 'configure-entries.jelly' and 'widget.jelly' takes the map from the descriptor and adds it to jobMap
-    public void descNicknameMap(){
-        HashMap<String, String> newMap = descriptor.getNicknameMap();
-
-        for(int i = 0; i < newMap.size(); ++i){
-            for(int j = 0; j < this.jobMap.size(); ++j){
-                if(newMap.keySet().toArray()[i].equals(this.jobMap.keySet().toArray()[j])){
-                    this.jobMap.put(newMap.keySet().toArray()[i].toString(), newMap.get(newMap.keySet().toArray()[i].toString()));
-                }
-            }
         }
     }
 
@@ -273,10 +242,7 @@ public class BuildMonitorView extends ListView {
     @Deprecated // use Config instead
     private Comparator<Job<?, ?>> order;      // note: this field can be removed when people stop using versions prior to 1.6+build.150
 
-    public void supplyJobs(){
-        descriptor.supplyJobs(this.jobMap);
-    }
-
+    //Gives nickname map to Config.java
     private void applyNicknames(List<String> keys, List<String> vals){
         for(String keyVal : jobMap.keySet()){
             jobMap.put(keyVal, keyVal);
@@ -303,6 +269,7 @@ public class BuildMonitorView extends ListView {
         currentConfig().setRenameFilters(regexMap);
     }
 
+    @SuppressWarnings("unused")//Used to supply map to configure-entries.jelly
     public HashMap<String, String> getRegexMap(){
         HashMap<String, String> map = new HashMap<String, String>();
         for(String key : currentConfig().getRenameFilters().keySet()){
