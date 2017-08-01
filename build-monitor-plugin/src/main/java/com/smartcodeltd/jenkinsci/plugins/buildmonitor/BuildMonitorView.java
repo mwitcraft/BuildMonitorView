@@ -260,8 +260,7 @@ public class BuildMonitorView extends ListView {
                 for(int j = 0; j < keys.size(); ++j){
                     if(keys.get(j) == "" && vals.get(j) == ""){
 
-                    }
-                    else if(curJobName.contains(keys.get(j))){
+                    }else if(curJobName.contains(keys.get(j))){
                         regexMap.put(keys.get(j), vals.get(j));
                         curJobNickname = jobMap.get(curJobName).replace(keys.get(j), vals.get(j));
                         jobMap.put(curJobName, curJobNickname);
