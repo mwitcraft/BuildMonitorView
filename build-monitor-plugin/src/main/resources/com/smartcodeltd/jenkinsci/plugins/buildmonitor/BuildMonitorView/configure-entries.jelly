@@ -17,7 +17,7 @@
   </f:entry>
 
   <f:entry title="${%Show multi-configuration jobs}" field="multi-config">
-    <f:checkbox name="multi-config"/>
+    <f:checkbox name="multi-config" checked="${it.getDisplayConfigs()}"/>
   </f:entry>
 
   <f:entry title="${%Jobs}">

@@ -210,4 +210,8 @@ public class BuildMonitorView extends ListView {
 
     @Deprecated // use Config instead
     private Comparator<Job<?, ?>> order;      // note: this field can be removed when people stop using versions prior to 1.6+build.150
+
+    public Boolean getDisplayConfigs(){
+        return currentConfig().getDisplayAllMatrixConfigurations();
+    }
 }
