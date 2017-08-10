@@ -91,12 +91,12 @@ public class BuildMonitorView extends ListView {
         return currentConfig().shouldDisplayCommitters();
     }
 
-    private static final BuildMonitorInstallation installation = new BuildMonitorInstallation();
-
-    @SuppressWarnings("unused") // used in index.jelly
-    public BuildMonitorInstallation getInstallation() {
-        return installation;
-    }
+//    private static final BuildMonitorInstallation installation = new BuildMonitorInstallation();
+//
+//    @SuppressWarnings("unused") // used in index.jelly
+//    public BuildMonitorInstallation getInstallation() {
+//        return installation;
+//    }
 
     @SuppressWarnings("unused") // used in .jelly
     public boolean collectAnonymousUsageStatistics() {
