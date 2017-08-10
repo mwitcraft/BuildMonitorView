@@ -152,7 +152,7 @@ public class BuildMonitorView extends ListView {
         Collections.sort(projects, currentConfig().getOrder());
 
         for (Job project : projects) {
-            jobs.add(views.viewOf(project));
+            jobs.addAll(views.viewsOf(project));
         }
 
         return jobs;

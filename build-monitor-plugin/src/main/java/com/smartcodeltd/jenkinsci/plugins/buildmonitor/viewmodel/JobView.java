@@ -1,11 +1,12 @@
 package com.smartcodeltd.jenkinsci.plugins.buildmonitor.viewmodel;
 
 import com.google.common.base.Objects;
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableList;
 import com.smartcodeltd.jenkinsci.plugins.buildmonitor.facade.RelativeLocation;
 import com.smartcodeltd.jenkinsci.plugins.buildmonitor.viewmodel.duration.Duration;
 import com.smartcodeltd.jenkinsci.plugins.buildmonitor.viewmodel.features.Feature;
+import com.smartcodeltd.jenkinsci.plugins.buildmonitor.viewmodel.features.ShowMatrixConfigurations;
+import hudson.matrix.MatrixConfiguration;
 import hudson.model.Job;
 import hudson.model.Result;
 import hudson.model.Run;
@@ -13,11 +14,13 @@ import hudson.util.RunList;
 
 import org.codehaus.jackson.map.annotate.JsonSerialize;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
 import static com.google.common.collect.Lists.newArrayList;
+import static hudson.Util.filter;
 import static java.lang.String.format;
 
 /**
@@ -32,8 +35,19 @@ public class JobView {
 
     private final List<Feature> features = newArrayList();
 
-    public static JobView of(Job<?, ?> job, List<Feature> features, boolean isPipelineJob) {
-        return new JobView(job, features, isPipelineJob, RelativeLocation.of(job), new Date());
+    public static List<JobView> of(Job<?, ?> job, List<Feature> features, boolean isPipelineJob) {
+        List<JobView> displayJobs = new ArrayList<JobView>();
+
+        if(!filter(features, ShowMatrixConfigurations.class).isEmpty()){
+            List<Job<?,?>> matrixJobConfigurations = new ArrayList(filter(job.getAllJobs(), MatrixConfiguration.class));
+            for(Job<?, ?> matrixJobConfiguration : matrixJobConfigurations){
+                displayJobs.add(new JobView(matrixJobConfiguration, features, isPipelineJob, RelativeLocation.of(matrixJobConfiguration), new Date()));
+            }
+        } else {
+            displayJobs.add(new JobView(job, features, isPipelineJob, RelativeLocation.of(job), new Date()));
+        }
+
+        return displayJobs;
     }
 
     public JobView(Job<?, ?> job, List<Feature> features, boolean isPipelineJob, RelativeLocation relative, Date systemTime) {
