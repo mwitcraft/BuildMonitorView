@@ -48,7 +48,7 @@ public class JobViews {
         	viewFeatures.add(new HasBadges());
         }
 
-        if (job instanceof MatrixProject && true /*config.displayAllMatrixConfigurations*/){
+        if (job instanceof MatrixProject && config.getDisplayAllMatrixConfigurations()){
             viewFeatures.add(new ShowMatrixConfigurations());
         }
 

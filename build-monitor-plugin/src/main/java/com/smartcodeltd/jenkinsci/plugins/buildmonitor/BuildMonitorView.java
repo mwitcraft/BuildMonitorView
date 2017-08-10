@@ -113,8 +113,10 @@ public class BuildMonitorView extends ListView {
 
             String requestedOrdering = req.getParameter("order");
             title                    = req.getParameter("title");
+            String multiConfig       = req.getParameter("multi-config");
 
             currentConfig().setDisplayCommitters(json.optBoolean("displayCommitters", true));
+            currentConfig().setDisplayAllMatrixConfigurations(multiConfig);
 
             try {
                 currentConfig().setOrder(orderIn(requestedOrdering));

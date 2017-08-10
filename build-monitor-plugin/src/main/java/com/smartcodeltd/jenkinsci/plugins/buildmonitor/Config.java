@@ -11,6 +11,7 @@ import static com.smartcodeltd.jenkinsci.plugins.buildmonitor.functions.NullSafe
 public class Config {
 
     private boolean displayCommitters;
+    private boolean displayAllMatrixConfigurations;
 
     public static Config defaultConfig() {
         return new Config();
@@ -50,4 +51,17 @@ public class Config {
     // --
 
     private Comparator<Job<?, ?>> order;
+
+    public void setDisplayAllMatrixConfigurations(String multiConfig){
+        if(multiConfig == null){
+            this.displayAllMatrixConfigurations = false;
+        } else {
+            this.displayAllMatrixConfigurations = true;
+        }
+    }
+
+    public boolean getDisplayAllMatrixConfigurations(){
+        return this.displayAllMatrixConfigurations;
+    }
+
 }
